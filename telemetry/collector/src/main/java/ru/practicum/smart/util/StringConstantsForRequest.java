@@ -1,0 +1,10 @@
+package ru.practicum.smart.util;
+
+public final class StringConstantsForRequest {
+    private StringConstantsForRequest() {
+    }
+
+    public static final String REQUEST_MAPPING_PATH_EVENTS = "/events";
+    public static final String REQUEST_MAPPING_PATH_SENSORS = "/sensors";
+    public static final String REQUEST_MAPPING_PATH_HUBS = "/hubs";
+}
