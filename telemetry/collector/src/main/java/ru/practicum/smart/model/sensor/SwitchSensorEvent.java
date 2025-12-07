@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SwitchSensorEvent extends SensorEvent {
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @Description("Текущее состояние переключателя. true - включен, false - выключен")
     boolean state;
 

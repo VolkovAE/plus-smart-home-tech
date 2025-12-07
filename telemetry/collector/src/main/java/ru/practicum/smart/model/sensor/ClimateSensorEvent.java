@@ -15,16 +15,16 @@ import lombok.experimental.FieldDefaults;
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ClimateSensorEvent extends SensorEvent {
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @Description("Уровень температуры по шкале Цельсия")
     int temperatureC;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @Positive(message = "Значение влажности не может быть меньше или равна нулю")
     @Description("Влажность")
     int humidity;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @PositiveOrZero(message = "Значение уровня CO2 не может быть меньше нуля")
     @Description("Уровень CO2")
     int co2Level;

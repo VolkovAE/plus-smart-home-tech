@@ -13,15 +13,15 @@ import lombok.experimental.FieldDefaults;
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MotionSensorEvent extends SensorEvent {
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @Description("Качество связи")
     int linkQuality;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @Description("Наличие/отсутствие движения")
     boolean motion;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @Description("Напряжение")
     int voltage;
 

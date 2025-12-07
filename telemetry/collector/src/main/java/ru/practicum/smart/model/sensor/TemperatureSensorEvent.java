@@ -13,11 +13,11 @@ import lombok.experimental.FieldDefaults;
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TemperatureSensorEvent extends SensorEvent {
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @Description("Температура в градусах Цельсия")
     int temperatureC;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @Description("Температура в градусах Фаренгейта")
     int temperatureF;
 

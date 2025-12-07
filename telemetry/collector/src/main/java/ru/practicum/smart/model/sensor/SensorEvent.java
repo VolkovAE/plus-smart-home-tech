@@ -31,12 +31,12 @@ import java.time.Instant;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class SensorEvent {
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @NotBlank(message = "Не указан идентификатор события датчика")
     @Description("Идентификатор события датчика")
     String id;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @NotBlank(message = "Не указан идентификатор хаба, связанного с событием датчика")
     @Description("Идентификатор хаба, связанного с событием")
     String hubId;
