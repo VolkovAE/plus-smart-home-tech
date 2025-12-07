@@ -19,7 +19,7 @@ import ru.practicum.smart.model.hub.HubEventType;
 public class DeviceAddedEvent extends DeviceEvent {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY, required = true)
     @JsonDeserialize(converter = StringToDeviceTypeConverter.class)
-    @Description("Тип устройства, которое добавляем в систему.")
+    @Description("Тип устройства, которое добавляем в систему")
     DeviceType deviceType;
 
     @Override
