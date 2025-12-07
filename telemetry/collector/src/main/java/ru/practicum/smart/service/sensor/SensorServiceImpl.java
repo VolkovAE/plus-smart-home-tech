@@ -9,15 +9,17 @@ import org.springframework.stereotype.Service;
 import ru.practicum.smart.model.sensor.*;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
+import static ru.practicum.smart.util.StringConstantsForRequest.BEAN_NAME_PRODUCER_KAFKA_TELEMETRY;
 import static ru.practicum.smart.util.StringConstantsForRequest.TOPIC_TELEMETRY;
 
 @Service
 @Qualifier("SensorServiceImpl")
 public class SensorServiceImpl implements SensorService {
+
     private final Producer<String, SpecificRecordBase> producer;
 
     @Autowired
-    public SensorServiceImpl(Producer<String, SpecificRecordBase> producer) {
+    public SensorServiceImpl(@Qualifier(BEAN_NAME_PRODUCER_KAFKA_TELEMETRY) Producer<String, SpecificRecordBase> producer) {
         this.producer = producer;
     }
 
