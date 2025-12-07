@@ -4,8 +4,10 @@ protocol SensorEventProtocol {
 	record ClimateSensorAvro {
 		// температура в градусах Цельсия
 		int temperature_c;
+
 		// уровень влажности
 		int humidity;
+
 		// уровень углекислого газа
 		int co2_level;
 	}
@@ -14,6 +16,7 @@ protocol SensorEventProtocol {
 	record LightSensorAvro {
 		// качество сигнала связи
 		int link_quality;
+
 		// уровень освещённости
 		int luminosity;
 	}
@@ -22,8 +25,10 @@ protocol SensorEventProtocol {
 	record MotionSensorAvro {
 		// качество сигнала связи
 		int link_quality;
+
 		// обнаружено ли движение
 		boolean motion;
+
 		// уровень напряжения
 		int voltage;
 	}
@@ -36,14 +41,18 @@ protocol SensorEventProtocol {
 
 	// данные с датчика температуры
 	record TemperatureSensorAvro {
-		// идентификатор датчика
-		string id;
-		// идентификатор хаба, к которому подключён датчик
-		string hubId;
-		// метка времени, указывающая, когда произошло событие телеметрии
-		timestamp_ms timestamp;
+		// полагаю это ошибка в ДЗ
+		//// идентификатор датчика
+		//string id;
+		//
+		//// идентификатор хаба, к которому подключён датчик
+		//string hubId;
+		//
+		//// метка времени, указывающая, когда произошло событие телеметрии
+		//timestamp_ms timestamp;
 		// температура в градусах Цельсия
 		int temperature_c;
+
 		// температура в градусах Фаренгейта
 		int temperature_f;
 	}
@@ -51,10 +60,13 @@ protocol SensorEventProtocol {
 	record SensorEventAvro {
 		// идентификатор сенсора
 		string id;
+
 		// идентификатор хаба, к которому подключён сенсор
 		string hubId;
+
 		// метка времени, указывающая, когда произошло событие телеметрии
 		timestamp_ms timestamp;
+
 		//  данные события
 		union{ClimateSensorAvro, LightSensorAvro, MotionSensorAvro, SwitchSensorAvro, TemperatureSensorAvro} payload;
 	}
