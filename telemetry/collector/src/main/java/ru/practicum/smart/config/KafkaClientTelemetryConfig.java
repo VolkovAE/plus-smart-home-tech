@@ -12,12 +12,11 @@ import ru.practicum.smart.serializer.GeneralAvroSerializer;
 
 import java.util.Properties;
 
-import static ru.practicum.smart.util.StringConstantsForRequest.BEAN_NAME_PRODUCER_KAFKA_TELEMETRY;
-import static ru.practicum.smart.util.StringConstantsForRequest.BOOTSTRAP_SERVERS_CONFIG;
+import static ru.practicum.smart.util.StringConstants.BEAN_NAME_PRODUCER_KAFKA_TELEMETRY;
+import static ru.practicum.smart.util.StringConstants.BOOTSTRAP_SERVERS_CONFIG;
 
 @Configuration
 public class KafkaClientTelemetryConfig {
-
     @Bean(name = BEAN_NAME_PRODUCER_KAFKA_TELEMETRY)
     @Description(value = "Единый поставщик сообщений от различных датчиков и хабов в кафку")
     public Producer<String, SpecificRecordBase> getProducerTelemetry() {

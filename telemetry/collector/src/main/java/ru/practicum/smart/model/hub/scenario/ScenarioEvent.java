@@ -11,8 +11,8 @@ import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.smart.model.hub.HubEvent;
 
-import static ru.practicum.smart.util.IntConstantsForRequest.SCENARIO_NAME_LENGTH_MAX;
-import static ru.practicum.smart.util.IntConstantsForRequest.SCENARIO_NAME_LENGTH_MIN;
+import static ru.practicum.smart.util.IntConstants.SCENARIO_NAME_LENGTH_MAX;
+import static ru.practicum.smart.util.IntConstants.SCENARIO_NAME_LENGTH_MIN;
 
 @Getter
 @Setter

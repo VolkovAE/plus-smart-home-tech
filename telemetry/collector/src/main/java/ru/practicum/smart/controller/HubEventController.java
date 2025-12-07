@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.smart.model.hub.HubEvent;
 import ru.practicum.smart.service.hub.HubService;
 
-import static ru.practicum.smart.util.StringConstantsForRequest.REQUEST_MAPPING_PATH_EVENTS;
-import static ru.practicum.smart.util.StringConstantsForRequest.REQUEST_MAPPING_PATH_HUBS;
+import static ru.practicum.smart.util.StringConstants.REQUEST_MAPPING_PATH_EVENTS;
+import static ru.practicum.smart.util.StringConstants.REQUEST_MAPPING_PATH_HUBS;
 
 @Validated
 @RestController

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.smart.model.sensor.SensorEvent;
 import ru.practicum.smart.service.sensor.SensorService;
 
-import static ru.practicum.smart.util.StringConstantsForRequest.REQUEST_MAPPING_PATH_EVENTS;
-import static ru.practicum.smart.util.StringConstantsForRequest.REQUEST_MAPPING_PATH_SENSORS;
+import static ru.practicum.smart.util.StringConstants.REQUEST_MAPPING_PATH_EVENTS;
+import static ru.practicum.smart.util.StringConstants.REQUEST_MAPPING_PATH_SENSORS;
 
 @Validated
 @RestController

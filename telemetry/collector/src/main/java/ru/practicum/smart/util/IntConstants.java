@@ -1,7 +1,7 @@
 package ru.practicum.smart.util;
 
-public final class IntConstantsForRequest {
-    private IntConstantsForRequest() {
+public final class IntConstants {
+    private IntConstants() {
     }
 
     public static final int SCENARIO_NAME_LENGTH_MIN = 3;
