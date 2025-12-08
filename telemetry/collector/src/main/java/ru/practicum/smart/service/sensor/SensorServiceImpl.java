@@ -36,7 +36,7 @@ public class SensorServiceImpl implements SensorService {
 
         // в качестве данных сообщения указываем экземпляр SensorEventAvro
         // перед отправкой брокеру Kafka-продюсер сам вызовет сериализатор
-        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(kafkaTopicProperties.sensors(), eventAvro);
+        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(kafkaTopicProperties.sensors(), null, event.getTimestamp().toEpochMilli(), null, eventAvro);
 
         // отправляем данные
         producer.send(record);

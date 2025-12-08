@@ -49,7 +49,7 @@ public class HubServiceImpl implements HubService {
 
         // в качестве данных сообщения указываем экземпляр HubEventAvro
         // перед отправкой брокеру Kafka-продюсер сам вызовет сериализатор
-        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(kafkaTopicProperties.hubs(), eventAvro);
+        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(kafkaTopicProperties.hubs(), null, event.getTimestamp().toEpochMilli(), null, eventAvro);
 
         // отправляем данные
         producer.send(record);
