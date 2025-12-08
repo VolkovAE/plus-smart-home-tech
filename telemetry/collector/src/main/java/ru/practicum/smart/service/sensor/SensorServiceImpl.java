@@ -7,21 +7,24 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.practicum.smart.config.KafkaTopicProperties;
 import ru.practicum.smart.model.sensor.*;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
 import static ru.practicum.smart.util.StringConstants.BEAN_NAME_PRODUCER_KAFKA_TELEMETRY;
-import static ru.practicum.smart.util.StringConstants.TOPIC_TELEMETRY_SENSORS;
 
 @Service
 @Qualifier("SensorServiceImpl")
 @Log
 public class SensorServiceImpl implements SensorService {
     private final Producer<String, SpecificRecordBase> producer;
+    private final KafkaTopicProperties kafkaTopicProperties;
 
     @Autowired
-    public SensorServiceImpl(@Qualifier(BEAN_NAME_PRODUCER_KAFKA_TELEMETRY) Producer<String, SpecificRecordBase> producer) {
+    public SensorServiceImpl(@Qualifier(BEAN_NAME_PRODUCER_KAFKA_TELEMETRY) Producer<String, SpecificRecordBase> producer,
+                             KafkaTopicProperties kafkaTopicProperties) {
         this.producer = producer;
+        this.kafkaTopicProperties = kafkaTopicProperties;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class SensorServiceImpl implements SensorService {
 
         // в качестве данных сообщения указываем экземпляр SensorEventAvro
         // перед отправкой брокеру Kafka-продюсер сам вызовет сериализатор
-        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(TOPIC_TELEMETRY_SENSORS, eventAvro);
+        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(kafkaTopicProperties.sensors(), eventAvro);
 
         // отправляем данные
         producer.send(record);

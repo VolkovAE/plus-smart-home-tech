@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.practicum.smart.config.KafkaTopicProperties;
 import ru.practicum.smart.model.hub.HubEvent;
 import ru.practicum.smart.model.hub.HubEventType;
 import ru.practicum.smart.model.hub.device.DeviceAddedEvent;
@@ -24,17 +25,19 @@ import ru.yandex.practicum.kafka.telemetry.event.*;
 import java.util.List;
 
 import static ru.practicum.smart.util.StringConstants.BEAN_NAME_PRODUCER_KAFKA_TELEMETRY;
-import static ru.practicum.smart.util.StringConstants.TOPIC_TELEMETRY_HUBS;
 
 @Service
 @Qualifier("HubServiceImpl")
 @Log
 public class HubServiceImpl implements HubService {
     private final Producer<String, SpecificRecordBase> producer;
+    private final KafkaTopicProperties kafkaTopicProperties;
 
     @Autowired
-    public HubServiceImpl(@Qualifier(BEAN_NAME_PRODUCER_KAFKA_TELEMETRY) Producer<String, SpecificRecordBase> producer) {
+    public HubServiceImpl(@Qualifier(BEAN_NAME_PRODUCER_KAFKA_TELEMETRY) Producer<String, SpecificRecordBase> producer,
+                          KafkaTopicProperties kafkaTopicProperties) {
         this.producer = producer;
+        this.kafkaTopicProperties = kafkaTopicProperties;
     }
 
     @Override
@@ -46,7 +49,7 @@ public class HubServiceImpl implements HubService {
 
         // в качестве данных сообщения указываем экземпляр HubEventAvro
         // перед отправкой брокеру Kafka-продюсер сам вызовет сериализатор
-        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(TOPIC_TELEMETRY_HUBS, eventAvro);
+        ProducerRecord<String, SpecificRecordBase> record = new ProducerRecord<>(kafkaTopicProperties.hubs(), eventAvro);
 
         // отправляем данные
         producer.send(record);
