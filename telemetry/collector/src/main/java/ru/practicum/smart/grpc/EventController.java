@@ -7,6 +7,7 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.practicum.smart.service.hub.handler.HubEventHandler;
 import ru.practicum.smart.service.sensor.handler.SensorEventHandler;
 import ru.yandex.practicum.grpc.telemetry.collector.CollectorControllerGrpc;
@@ -25,6 +26,7 @@ public class EventController extends CollectorControllerGrpc.CollectorController
     private final Map<SensorEventProto.PayloadCase, SensorEventHandler> sensorEventHandlers;
     private final Map<HubEventProto.PayloadCase, HubEventHandler> hubEventHandlers;
 
+    @Autowired
     public EventController(Set<SensorEventHandler> sensorEventHandlers,
                            Set<HubEventHandler> hubEventHandlers) {
         // Преобразовываем набор хендлеров в map, где ключ — тип события от конкретного датчика или хаба.
