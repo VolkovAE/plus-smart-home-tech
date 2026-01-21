@@ -14,7 +14,7 @@ import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import java.util.List;
 import java.util.Properties;
 
-import static ru.practicum.smart.unil.StringConstants.BEAN_NAME_CONSUMER_KAFKA_TELEMETRY;
+import static ru.practicum.smart.unil.StringConstants.BEAN_NAME_CONSUMER_KAFKA_AGGREGATOR;
 
 @Configuration
 public class KafkaConsumerAggregatorConfig {
@@ -25,7 +25,7 @@ public class KafkaConsumerAggregatorConfig {
         this.kafkaConsumerProperties = kafkaConsumerProperties;
     }
 
-    @Bean(name = BEAN_NAME_CONSUMER_KAFKA_TELEMETRY)
+    @Bean(name = BEAN_NAME_CONSUMER_KAFKA_AGGREGATOR)
     @Description(value = "Единый потребитель сообщений из кафки от различных датчиков и хабов (вход в агрегатор)")
     public Consumer<Void, SensorEventAvro> getConsumerTelemetry() {
         Properties config = new Properties();
@@ -37,6 +37,8 @@ public class KafkaConsumerAggregatorConfig {
 
         Consumer<Void, SensorEventAvro> consumer = new KafkaConsumer<>(config);
         consumer.subscribe(List.of(kafkaConsumerProperties.topic()));
+
+        Runtime.getRuntime().addShutdownHook(new Thread(consumer::wakeup));
 
         return consumer;
     }
