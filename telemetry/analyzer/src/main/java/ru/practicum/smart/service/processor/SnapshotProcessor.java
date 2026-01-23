@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import ru.practicum.smart.service.handler.SnapshotService;
 import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 
 import java.time.Duration;
@@ -29,9 +30,13 @@ public class SnapshotProcessor implements Runnable {
 
     private final Consumer<Void, SensorsSnapshotAvro> consumer;
 
+    private final SnapshotService snapshotService;
+
     @Autowired
-    public SnapshotProcessor(@Qualifier(BEAN_NAME_CONSUMER_SNAPSHOT_KAFKA_ANALYZER) Consumer<Void, SensorsSnapshotAvro> consumer) {
+    public SnapshotProcessor(@Qualifier(BEAN_NAME_CONSUMER_SNAPSHOT_KAFKA_ANALYZER) Consumer<Void, SensorsSnapshotAvro> consumer,
+                             SnapshotService snapshotService) {
         this.consumer = consumer;
+        this.snapshotService = snapshotService;
     }
 
     @Override
@@ -71,22 +76,9 @@ public class SnapshotProcessor implements Runnable {
     }
 
     private void handleRecord(ConsumerRecord<Void, SensorsSnapshotAvro> record) throws InterruptedException {
-        // todo
-//        HubEventAvro eventAvro = record.value();
-//
-//        Optional<SensorsSnapshotAvro> snapshotAvro = snapshotService.updateState(eventAvro);
-//        if (snapshotAvro.isEmpty()) return;
-//
-//        SensorsSnapshotAvro snapshot = snapshotAvro.get();
-//        ProducerRecord<String, SpecificRecordBase> producerRecord = new ProducerRecord<>(
-//                kafkaTopicSnapshots.snapshots(),
-//                null,
-//                snapshot.getTimestamp().toEpochMilli(),
-//                null,
-//                snapshot
-//        );
-//
-//        producer.send(producerRecord);
+        SensorsSnapshotAvro eventAvro = record.value();
+
+        snapshotService.handleRecord(eventAvro);
     }
 
     private static void manageOffsets(ConsumerRecord<Void, SensorsSnapshotAvro> record, int count, Consumer<Void, SensorsSnapshotAvro> consumer) {

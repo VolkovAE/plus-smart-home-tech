@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import ru.practicum.smart.service.handler.HubEventService;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 
 import java.time.Duration;
@@ -29,9 +30,13 @@ public class HubEventProcessor implements Runnable {
 
     private final Consumer<Void, HubEventAvro> consumer;
 
+    private final HubEventService hubEventService;
+
     @Autowired
-    public HubEventProcessor(@Qualifier(BEAN_NAME_CONSUMER_HUB_KAFKA_ANALYZER) Consumer<Void, HubEventAvro> consumer) {
+    public HubEventProcessor(@Qualifier(BEAN_NAME_CONSUMER_HUB_KAFKA_ANALYZER) Consumer<Void, HubEventAvro> consumer,
+                             HubEventService hubEventService) {
         this.consumer = consumer;
+        this.hubEventService = hubEventService;
     }
 
     @Override
@@ -67,22 +72,9 @@ public class HubEventProcessor implements Runnable {
     }
 
     private void handleRecord(ConsumerRecord<Void, HubEventAvro> record) throws InterruptedException {
-        // todo
-//        HubEventAvro eventAvro = record.value();
-//
-//        Optional<SensorsSnapshotAvro> snapshotAvro = snapshotService.updateState(eventAvro);
-//        if (snapshotAvro.isEmpty()) return;
-//
-//        SensorsSnapshotAvro snapshot = snapshotAvro.get();
-//        ProducerRecord<String, SpecificRecordBase> producerRecord = new ProducerRecord<>(
-//                kafkaTopicSnapshots.snapshots(),
-//                null,
-//                snapshot.getTimestamp().toEpochMilli(),
-//                null,
-//                snapshot
-//        );
-//
-//        producer.send(producerRecord);
+        HubEventAvro eventAvro = record.value();
+
+        hubEventService.handleRecord(eventAvro);
     }
 
     private static void manageOffsets(ConsumerRecord<Void, HubEventAvro> record, int count, Consumer<Void, HubEventAvro> consumer) {
