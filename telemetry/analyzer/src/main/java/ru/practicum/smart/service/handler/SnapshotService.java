@@ -40,7 +40,7 @@ public class SnapshotService {
 
         List<Scenario> scenarios = scenarioRepository.findByHubId(hubId);
         if (scenarios.isEmpty()) {
-            log.info("Для хаба с hubId = {} нет сценариев.", hubId);
+            log.warn("Для хаба с hubId = {} нет сценариев.", hubId);
 
             return;
         }
