@@ -36,6 +36,8 @@ public class SnapshotService {
     public void handleRecord(SensorsSnapshotAvro sensorsSnapshotAvro) {
         String hubId = sensorsSnapshotAvro.getHubId();
 
+        log.info("Получен снапшот от хаба с hubId = {}.", hubId);
+
         List<Scenario> scenarios = scenarioRepository.findByHubId(hubId);
         if (scenarios.isEmpty()) {
             log.info("Для хаба с hubId = {} нет сценариев.", hubId);
