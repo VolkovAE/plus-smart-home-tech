@@ -6,23 +6,23 @@ on:
       verbose_mode:
         description: "Включить подробные логи во время тестов"
         required: true
-        default: false
+        default: true
         type: boolean
       print_logs:
         description: "Включить вывод логов в консоль"
         required: true
-        default: false
+        default: true
         type: boolean
   pull_request:
     inputs:
       verbose_mode:
-        required: false
+        required: true
         type: string
-        default: "false"
+        default: "true"
       print_logs:
-        required: false
+        required: true
         type: string
-        default: "false"
+        default: "true"
 
 jobs:
   build:
