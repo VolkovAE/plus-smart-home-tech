@@ -22,6 +22,9 @@ public class DeviceService {
     @Transactional
     public void addDevice(DeviceAddedEventAvro eventAvro, String hubId) {
         String id = eventAvro.getId();
+
+        log.info("Запрос на добавление сенсора с id = {} в хабе с hubId = {}", id, hubId);
+
         if (sensorRepository.findByIdAndHubId(id, hubId).isPresent()) return;
 
         Sensor sensor = new Sensor();
