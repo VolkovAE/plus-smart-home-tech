@@ -27,9 +27,14 @@ public class DeviceService {
 
         if (sensorRepository.findByIdAndHubId(id, hubId).isPresent()) return;
 
+        log.info("Проверили, что сенсора нет в хабе.");
+
         Sensor sensor = new Sensor();
         sensor.setId(eventAvro.getId());
         sensor.setHubId(hubId);
+
+        log.info("Создали объект сенсора: " + sensor.toString());
+
         sensorRepository.save(sensor);
 
         log.info("Сенсор с id = {} добавлен.", id);
