@@ -9,8 +9,6 @@ import ru.practicum.smart.model.sensor.MotionSensorEvent;
 import ru.practicum.smart.service.sensor.SensorService;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 
-import java.time.Instant;
-
 @Component
 public class MotionSensorEventHandler implements SensorEventHandler {
     private final SensorService sensorService;
@@ -31,9 +29,7 @@ public class MotionSensorEventHandler implements SensorEventHandler {
     public void handle(SensorEventProto event) {
         // Объект класса *Proto преобразуем в объект класса из пакета model и далее используем ранее реализованную отправку в брокер
         MotionSensorEvent motionSensorEvent = new MotionSensorEvent();
-        motionSensorEvent.setId(event.getId());
-        motionSensorEvent.setHubId(event.getHubId());
-        motionSensorEvent.setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds(), event.getTimestamp().getNanos()));   // преобразовать Timestamp в Instant
+        SensorEventHandler.setGeneralField(motionSensorEvent, event);
         motionSensorEvent.setMotion(event.getMotionSensor().getMotion());
         motionSensorEvent.setVoltage(event.getMotionSensor().getVoltage());
         motionSensorEvent.setLinkQuality(event.getMotionSensor().getLinkQuality());

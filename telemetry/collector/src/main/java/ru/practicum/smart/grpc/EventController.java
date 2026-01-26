@@ -8,6 +8,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.practicum.smart.exception.NotFoundException;
 import ru.practicum.smart.service.hub.handler.HubEventHandler;
 import ru.practicum.smart.service.sensor.handler.SensorEventHandler;
 import ru.yandex.practicum.grpc.telemetry.collector.CollectorControllerGrpc;
@@ -47,14 +48,14 @@ public class EventController extends CollectorControllerGrpc.CollectorController
     @Override
     public void collectSensorEvent(SensorEventProto request, StreamObserver<Empty> responseObserver) {
         try {
-            log.info("Получено сообщение от сенсора: \n{}.", request.toString());
+            log.info("Получено сообщение от сенсора: \n{}.", request);
 
             // проверяем, есть ли обработчик для полученного события
             if (sensorEventHandlers.containsKey(request.getPayloadCase())) {
                 // если обработчик найден, передаём событие ему на обработку
                 sensorEventHandlers.get(request.getPayloadCase()).handle(request);
             } else {
-                throw new IllegalArgumentException("Не могу найти обработчик для события сенсора" + request.getPayloadCase());
+                throw new NotFoundException("Не могу найти обработчик для события сенсора" + request.getPayloadCase());
             }
 
             // после обработки события возвращаем ответ клиенту
@@ -70,7 +71,7 @@ public class EventController extends CollectorControllerGrpc.CollectorController
     @Override
     public void collectHubEvent(HubEventProto request, StreamObserver<Empty> responseObserver) {
         try {
-            log.info("Получено сообщение от хаба: \n{}", request.toString());
+            log.info("Получено сообщение от хаба: \n{}", request);
 
             // проверяем, есть ли обработчик для полученного события
             if (hubEventHandlers.containsKey(request.getPayloadCase())) {

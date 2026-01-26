@@ -9,8 +9,6 @@ import ru.practicum.smart.model.sensor.TemperatureSensorEvent;
 import ru.practicum.smart.service.sensor.SensorService;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 
-import java.time.Instant;
-
 @Component
 public class TemperatureSensorEventHandler implements SensorEventHandler {
     private final SensorService sensorService;
@@ -31,9 +29,7 @@ public class TemperatureSensorEventHandler implements SensorEventHandler {
     public void handle(SensorEventProto event) {
         // Объект класса *Proto преобразуем в объект класса из пакета model и далее используем ранее реализованную отправку в брокер
         TemperatureSensorEvent temperatureSensorEvent = new TemperatureSensorEvent();
-        temperatureSensorEvent.setId(event.getId());
-        temperatureSensorEvent.setHubId(event.getHubId());
-        temperatureSensorEvent.setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds(), event.getTimestamp().getNanos()));   // преобразовать Timestamp в Instant
+        SensorEventHandler.setGeneralField(temperatureSensorEvent, event);
         temperatureSensorEvent.setTemperatureC(event.getTemperatureSensor().getTemperatureC());
         temperatureSensorEvent.setTemperatureF(event.getTemperatureSensor().getTemperatureF());
 

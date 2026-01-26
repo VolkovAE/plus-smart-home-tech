@@ -9,8 +9,6 @@ import ru.practicum.smart.model.sensor.SwitchSensorEvent;
 import ru.practicum.smart.service.sensor.SensorService;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 
-import java.time.Instant;
-
 @Component
 public class SwitchSensorEventHandler implements SensorEventHandler {
     private final SensorService sensorService;
@@ -31,9 +29,7 @@ public class SwitchSensorEventHandler implements SensorEventHandler {
     public void handle(SensorEventProto event) {
         // Объект класса *Proto преобразуем в объект класса из пакета model и далее используем ранее реализованную отправку в брокер
         SwitchSensorEvent switchSensorEvent = new SwitchSensorEvent();
-        switchSensorEvent.setId(event.getId());
-        switchSensorEvent.setHubId(event.getHubId());
-        switchSensorEvent.setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds(), event.getTimestamp().getNanos()));   // преобразовать Timestamp в Instant
+        SensorEventHandler.setGeneralField(switchSensorEvent, event);
         switchSensorEvent.setState(event.getSwitchSensor().getState());
 
         sensorService.toCollect(switchSensorEvent);

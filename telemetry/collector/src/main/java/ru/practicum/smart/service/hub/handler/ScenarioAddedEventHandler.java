@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import ru.practicum.smart.mapper.ActionTypeMapper;
 import ru.practicum.smart.mapper.ConditionOperationMapper;
 import ru.practicum.smart.mapper.ConditionTypeMapper;
+import ru.practicum.smart.model.hub.HubEvent;
+import ru.practicum.smart.model.hub.HubEventType;
 import ru.practicum.smart.model.hub.scenario.ScenarioAddedEvent;
 import ru.practicum.smart.model.hub.scenario.action.DeviceAction;
 import ru.practicum.smart.model.hub.scenario.condition.ScenarioCondition;
@@ -16,7 +18,6 @@ import ru.yandex.practicum.grpc.telemetry.event.DeviceActionProto;
 import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 import ru.yandex.practicum.grpc.telemetry.event.ScenarioConditionProto;
 
-import java.time.Instant;
 import java.util.List;
 
 @Component
@@ -38,10 +39,7 @@ public class ScenarioAddedEventHandler implements HubEventHandler {
     @Override
     public void handle(HubEventProto event) {
         // Объект класса *Proto преобразуем в объект класса из пакета model и далее используем ранее реализованную отправку в брокер
-        ScenarioAddedEvent scenarioAddedEvent = new ScenarioAddedEvent();
-        scenarioAddedEvent.setHubId(event.getHubId());
-        scenarioAddedEvent.setTimestamp(Instant.ofEpochSecond(event.getTimestamp().getSeconds(), event.getTimestamp().getNanos()));   // преобразовать Timestamp в Instant
-        scenarioAddedEvent.setName(event.getScenarioAdded().getName());
+        ScenarioAddedEvent scenarioAddedEvent = (ScenarioAddedEvent) HubEvent.getHubEventFromProto(event, HubEventType.SCENARIO_ADDED);
 
         // Набор условий активации сценария - conditions
         List<ScenarioCondition> conditions = event.getScenarioAdded().getConditionList().stream()
@@ -79,7 +77,11 @@ public class ScenarioAddedEventHandler implements HubEventHandler {
         DeviceAction deviceAction = new DeviceAction();
         deviceAction.setSensorId(deviceActionProto.getSensorId());
         deviceAction.setType(ActionTypeMapper.mapToActionType(deviceActionProto.getType()));
-        deviceAction.setValue(deviceActionProto.getValue());
+        if (deviceActionProto.hasValue()) {
+            deviceAction.setValue(deviceActionProto.getValue());
+        } else {
+            deviceAction.setValue(null);
+        }
 
         return deviceAction;
     }

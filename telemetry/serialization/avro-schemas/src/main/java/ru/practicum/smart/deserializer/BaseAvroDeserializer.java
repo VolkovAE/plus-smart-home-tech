@@ -8,6 +8,7 @@ import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.common.errors.PrincipalDeserializationException;
 import org.apache.kafka.common.serialization.Deserializer;
+import ru.practicum.smart.exception.DeserializeException;
 
 public class BaseAvroDeserializer<T extends SpecificRecordBase> implements Deserializer<T> {
     private final DecoderFactory decoderFactory;
@@ -29,8 +30,8 @@ public class BaseAvroDeserializer<T extends SpecificRecordBase> implements Deser
             if (data != null) {
                 BinaryDecoder decoder = decoderFactory.binaryDecoder(data, null);
                 return this.reader.read(null, decoder);
-            }
-            return null;
+            } else
+                throw new DeserializeException("Ошибка десериализации данных из топика [" + topic + "]: нет данных.");
         } catch (Exception e) {
             throw new PrincipalDeserializationException("Ошибка десериализации данных из топика [" + topic + "]", e);
         }

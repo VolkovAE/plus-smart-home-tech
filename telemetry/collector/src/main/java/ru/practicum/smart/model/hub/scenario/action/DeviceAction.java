@@ -29,5 +29,5 @@ public class DeviceAction {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Description("Дополнительная информация связанная с действием")
-    int value;
+    Integer value;
 }
