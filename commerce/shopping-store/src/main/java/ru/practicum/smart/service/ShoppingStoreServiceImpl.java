@@ -18,7 +18,7 @@ import ru.practicum.smart.storage.ProductRepository;
 
 @Slf4j
 @Service
-@Qualifier("SensorServiceImpl")
+@Qualifier("StoreServiceImpl")
 public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;

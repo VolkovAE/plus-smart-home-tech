@@ -21,7 +21,7 @@ public class ShoppingStoreController {
     private final ShoppingStoreService storeService;
 
     @Autowired
-    public ShoppingStoreController(@Qualifier("SensorServiceImpl") ShoppingStoreService storeService) {
+    public ShoppingStoreController(@Qualifier("StoreServiceImpl") ShoppingStoreService storeService) {
         this.storeService = storeService;
     }
 
