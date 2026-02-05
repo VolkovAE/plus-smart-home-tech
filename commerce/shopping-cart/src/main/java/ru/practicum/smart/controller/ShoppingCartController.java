@@ -36,9 +36,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/remove")
-    public CartDto removeProducts(@RequestParam
-                                  @NotBlank(message = MESSAGE_IF_NOT_NAME_USER)
-                                  @NotNull(message = MESSAGE_IF_NOT_NAME_USER) String username,
+    public CartDto removeProducts(@RequestParam String username,
                                   @RequestBody List<String> productIds) {
         return cartService.removeProducts(username, productIds);
     }

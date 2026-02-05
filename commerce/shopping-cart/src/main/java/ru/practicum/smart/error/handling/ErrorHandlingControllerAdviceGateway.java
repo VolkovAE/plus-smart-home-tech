@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.smart.exception.EmptyUsernameException;
+import ru.practicum.smart.exception.NotFoundException;
 import ru.practicum.smart.exception.ValidationException;
 
 import java.util.List;
@@ -68,9 +69,9 @@ public class ErrorHandlingControllerAdviceGateway {
         return new ValidationErrorResponse(violations);
     }
 
-    @ExceptionHandler(ValidationException.class)
+    @ExceptionHandler({ValidationException.class, NotFoundException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ValidationErrorResponse onValidationException(ValidationException e) {
+    public ValidationErrorResponse onValidationException(Exception e) {
         Violation violation = new Violation("-", e.getMessage());
         List<Violation> violationList = List.of(violation);
 

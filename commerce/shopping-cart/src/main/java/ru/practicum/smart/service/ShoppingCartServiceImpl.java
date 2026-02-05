@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.smart.dto.cart.CartDto;
 import ru.practicum.smart.dto.cart.NewQuantityProduct;
 import ru.practicum.smart.exception.EmptyUsernameException;
+import ru.practicum.smart.exception.NotFoundException;
 import ru.practicum.smart.exception.ValidationException;
 import ru.practicum.smart.mapper.CartMapper;
 import ru.practicum.smart.model.Cart;
@@ -15,11 +16,11 @@ import ru.practicum.smart.storage.CartRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static ru.practicum.smart.util.StringConstants.MESSAGE_IF_NOT_NAME_USER;
-import static ru.practicum.smart.util.StringConstants.MESSAGE_IF_NOT_PRODUCTS;
+import static ru.practicum.smart.util.StringConstants.*;
 
 @Slf4j
 @Service
@@ -77,7 +78,30 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public CartDto removeProducts(String username, List<String> productIds) {
-        return null;
+        // Проверка имени пользователя
+        checkUserName(username);
+
+        // Проверка наличия пордуктов добавляемых в корзину
+        checkProducts(productIds);
+
+        // Получаем активную карту пользователя, если нет, то создаем
+        Cart cart = getActiveCartByUserName(username);
+
+        // Удаляем продукты из корзины
+        Set<String> curProductIds = cart.getProducts().stream()
+                .map(CartProducts::getProductId)
+                .collect(Collectors.toSet());
+
+        // Проверка, что продукты для удаления есть в корзине
+        if (!curProductIds.containsAll(productIds))
+            throw new NotFoundException(MESSAGE_IF_NOT_PRODUCTS_IN_CARD);
+
+        // Удаляем товары из корзины
+        cart.getProducts().removeIf(cartProducts -> productIds.contains(cartProducts.getProductId()));
+
+        cart = cartRepository.save(cart);
+
+        return cartMapper.toCartDto(cart);
     }
 
     @Override
@@ -101,6 +125,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     private void checkProducts(Map<String, Integer> products) {
+        if (products == null || products.isEmpty())
+            throw new ValidationException(MESSAGE_IF_NOT_PRODUCTS, log);
+    }
+
+    private void checkProducts(List<String> products) {
         if (products == null || products.isEmpty())
             throw new ValidationException(MESSAGE_IF_NOT_PRODUCTS, log);
     }
@@ -142,30 +171,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 //        return true;
 //    }
 //
-//    @Override
-//    @Transactional
-//    public ShoppingCartDto removeProducts(String username, List<UUID> productIds) {
-//        usernameNotEmptyOrThrow(username);
-//        ShoppingCart cart = getActiveCartOrThrow(username);
-//        if (productIds == null || productIds.isEmpty()) {
-//            throw new IllegalArgumentException("Список продуктов к удалению из корзины не должен быть пустым");
-//        }
-//
-//        Set<UUID> cartProductIds = cart.getItems().stream()
-//                .map(CartItem::getProductId)
-//                .collect(Collectors.toSet());
-//
-//        // Пересечение
-//        boolean anyFound = productIds.stream().anyMatch(cartProductIds::contains);
-//        if (!anyFound) {
-//            throw new ProductNotFoundException("Нет искомых товаров " + productIds + " в корзине " + username);
-//        }
-//
-//        cart.getItems().removeIf(item -> productIds.contains(item.getProductId()));
-//
-//        cart = cartRepository.save(cart);
-//        return cartMapper.toDto(cart);
-//    }
 //
 //    @Override
 //    @Transactional
