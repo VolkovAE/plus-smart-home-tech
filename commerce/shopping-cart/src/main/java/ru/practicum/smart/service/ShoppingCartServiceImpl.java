@@ -16,6 +16,7 @@ import ru.practicum.smart.storage.CartRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -44,7 +45,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         checkProducts(products);
 
         // Получаем активную карту пользователя, если нет, то создаем
-        Cart cart = getActiveCartByUserName(username);
+        Cart cart = getActiveCartByUserName(username, true);
 
         // Добавляем переданные продукты в корзину
         Map<String, CartProducts> existingProducts = cart.getProducts().stream()
@@ -84,8 +85,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         // Проверка наличия пордуктов добавляемых в корзину
         checkProducts(productIds);
 
-        // Получаем активную карту пользователя, если нет, то создаем
-        Cart cart = getActiveCartByUserName(username);
+        // Получаем активную карту пользователя
+        Cart cart = getActiveCartByUserName(username, false);
 
         // Удаляем продукты из корзины
         Set<String> curProductIds = cart.getProducts().stream()
@@ -106,17 +107,59 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public CartDto changeQuantity(String username, NewQuantityProduct changeQuantity) {
-        return null;
+        // Проверка имени пользователя
+        checkUserName(username);
+
+        // Проверяем наличие данных для изменения
+        if (changeQuantity == null)
+            throw new ValidationException("Нет данных для изменения количества продуктов.");
+
+        // Получаем активную карту пользователя
+        Cart cart = getActiveCartByUserName(username, false);
+
+        // Изменяем количество по одному из продуктов
+        String productId = changeQuantity.getProductId();
+        Integer newQuantity = changeQuantity.getNewQuantity();
+
+        Optional<CartProducts> existingProduct = cart.getProducts().stream()
+                .filter(cartProducts -> cartProducts.getProductId().equals(productId))
+                .findFirst();
+        if (existingProduct.isEmpty()) throw new NotFoundException("Продукт не найден в корзине.");
+
+        existingProduct.get().setQuantity(newQuantity);
+
+        // todo проверить остаток на складе
+
+        cart = cartRepository.save(cart);
+
+        return cartMapper.toCartDto(cart);
     }
 
     @Override
     public CartDto getActiveCart(String username) {
-        return null;
+        // Проверка имени пользователя
+        checkUserName(username);
+
+        // Получаем активную карту пользователя, если нет, то создаем
+        Cart cart = getActiveCartByUserName(username, true);
+
+        return cartMapper.toCartDto(cart);
     }
 
     @Override
     public Boolean deactivate(String username) {
-        return null;
+        // Проверка имени пользователя
+        checkUserName(username);
+
+        // Получаем активную карту пользователя
+        Cart cart = getActiveCartByUserName(username, false);
+
+        // Деактивируем карту
+        cart.setActive(false);
+
+        cartRepository.save(cart);
+
+        return true;
     }
 
     private void checkUserName(String username) {
@@ -134,75 +177,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             throw new ValidationException(MESSAGE_IF_NOT_PRODUCTS, log);
     }
 
-    private Cart getActiveCartByUserName(String username) {
-        Cart cart = cartRepository.findByUsernameAndActiveTrue(username)
+    private Cart getActiveCartByUserName(String username, boolean createNew) {
+        return cartRepository.findByUsernameAndActiveTrue(username)
                 .orElseGet(() -> {
-                    Cart newCart = new Cart();
-                    newCart.setUsername(username);
-                    newCart.setActive(true);
+                    if (createNew) {
+                        Cart newCart = new Cart();
+                        newCart.setUsername(username);
+                        newCart.setActive(true);
 
-                    return newCart;
+                        return newCart;
+                    } else throw new NotFoundException("Не найдена активная корзина.");
                 });
-        return cart;
     }
 }
-
-//public class ShoppingCartServiceImpl implements ShoppingCartService {
-//    private final ShoppingCartRepository cartRepository;
-//    private final ShoppingCartMapper cartMapper;
-//    private final WarehouseClient warehouseClient;
-//
-//
-//    @Override
-//    @Transactional(readOnly = true)
-//    public ShoppingCartDto getActiveShoppingCart(String username) {
-//        usernameNotEmptyOrThrow(username);
-//        ShoppingCart cart = getActiveCartOrThrow(username);
-//        return cartMapper.toDto(cart);
-//    }
-//
-//    @Override
-//    @Transactional
-//    public Boolean deactivateShoppingCart(String username) {
-//        usernameNotEmptyOrThrow(username);
-//        ShoppingCart cart = getActiveCartOrThrow(username);
-//        cart.setActive(false);
-//        cartRepository.save(cart);
-//        return true;
-//    }
-//
-//
-//    @Override
-//    @Transactional
-//    public ShoppingCartDto changeQuantity(String username, ChangeProductQuantityRequest changeQuantity) {
-//        usernameNotEmptyOrThrow(username);
-//        ShoppingCart cart = getActiveCartOrThrow(username);
-//
-//        if (changeQuantity == null) {
-//            throw new IllegalArgumentException("changeQuantity == null");
-//        }
-//        UUID productId = changeQuantity.getProductId();
-//        Integer newQuantity = changeQuantity.getNewQuantity();
-//
-//        Optional<CartItem> existingItemOpt = cart.getItems().stream()
-//                .filter(item -> item.getProductId().equals(productId))
-//                .findFirst();
-//        if (existingItemOpt.isEmpty()) {
-//            throw new ProductNotFoundException("Товар " + productId + " не найден в корзине " + username);
-//        }
-//
-//        existingItemOpt.get().setQuantity(newQuantity);
-//
-//        warehouseClient.checkAvailabilityForCart(cartMapper.toDto(cart));
-//
-//        cart = cartRepository.save(cart);
-//        return cartMapper.toDto(cart);
-//    }
-//
-//
-//    private ShoppingCart getActiveCartOrThrow(String username) {
-//        return cartRepository.findByUsernameAndActiveTrue(username).orElseThrow(() ->
-//                new CartNotFoundException("Не найдена активная корзина пользователя " + username));
-//    }
-//
-//}

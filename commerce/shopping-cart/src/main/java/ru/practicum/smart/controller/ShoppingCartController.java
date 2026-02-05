@@ -42,9 +42,7 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/change-quantity")
-    public CartDto changeQuantity(@RequestParam
-                                  @NotBlank(message = MESSAGE_IF_NOT_NAME_USER)
-                                  @NotNull(message = MESSAGE_IF_NOT_NAME_USER) String username,
+    public CartDto changeQuantity(@RequestParam String username,
                                   @Valid @RequestBody NewQuantityProduct changeQuantity) {
         return cartService.changeQuantity(username, changeQuantity);
     }
