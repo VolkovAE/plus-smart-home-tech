@@ -1,6 +1,5 @@
-package ru.practicum.smart.dto.cart;
+package ru.practicum.smart.dto.warehouse;
 
-import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,11 +9,15 @@ import org.jetbrains.annotations.NotNull;
 @Data
 @EqualsAndHashCode(of = {"productId"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class NewQuantityProduct {
+public class NewProductDto {
     @NotNull
     String productId;
 
+    DimensionDto dimension;
+
     @NotNull
-    @Min(value = 1, message = "Количество не может быть меньше 1.")
-    Integer newQuantity;
+    Double weight;
+
+    @NotNull
+    Boolean fragile;
 }

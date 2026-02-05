@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS warehouse.products
     depth NUMERIC(15,2),
     height NUMERIC(15,2),
     width NUMERIC(15,2),
-    quantity INTEGER NOT NULL DEFAULT 1,
+    quantity INTEGER NOT NULL DEFAULT 0,
     weight NUMERIC(15,3),
     fragile BOOLEAN DEFAULT FALSE
 );

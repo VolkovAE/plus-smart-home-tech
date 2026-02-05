@@ -1,0 +1,7 @@
+package ru.practicum.smart.storage;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import ru.practicum.smart.model.QuantityProductInWarehouse;
+
+public interface QuantityProductInWarehouseRepository extends JpaRepository<QuantityProductInWarehouse, String> {
+}

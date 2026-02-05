@@ -1,4 +1,4 @@
-package ru.practicum.smart.error.handling;
+package ru.practicum.smart.handling;
 
 import lombok.Getter;
 
