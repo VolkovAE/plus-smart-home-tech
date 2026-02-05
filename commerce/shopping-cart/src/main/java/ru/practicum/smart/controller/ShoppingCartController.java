@@ -1,6 +1,8 @@
 package ru.practicum.smart.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +14,8 @@ import ru.practicum.smart.service.ShoppingCartService;
 
 import java.util.List;
 import java.util.Map;
+
+import static ru.practicum.smart.util.StringConstants.MESSAGE_IF_NOT_NAME_USER;
 
 @Slf4j
 @RestController
@@ -32,24 +36,32 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/remove")
-    public CartDto removeProducts(@RequestParam String username,
+    public CartDto removeProducts(@RequestParam
+                                  @NotBlank(message = MESSAGE_IF_NOT_NAME_USER)
+                                  @NotNull(message = MESSAGE_IF_NOT_NAME_USER) String username,
                                   @RequestBody List<String> productIds) {
         return cartService.removeProducts(username, productIds);
     }
 
     @PostMapping("/change-quantity")
-    public CartDto changeQuantity(@RequestParam String username,
+    public CartDto changeQuantity(@RequestParam
+                                  @NotBlank(message = MESSAGE_IF_NOT_NAME_USER)
+                                  @NotNull(message = MESSAGE_IF_NOT_NAME_USER) String username,
                                   @Valid @RequestBody NewQuantityProduct changeQuantity) {
         return cartService.changeQuantity(username, changeQuantity);
     }
 
     @GetMapping
-    public CartDto getActiveCart(@RequestParam String username) {
+    public CartDto getActiveCart(@RequestParam
+                                 @NotBlank(message = MESSAGE_IF_NOT_NAME_USER)
+                                 @NotNull(message = MESSAGE_IF_NOT_NAME_USER) String username) {
         return cartService.getActiveCart(username);
     }
 
     @DeleteMapping
-    public Boolean deactivate(@RequestParam String username) {
+    public Boolean deactivate(@RequestParam
+                              @NotBlank(message = MESSAGE_IF_NOT_NAME_USER)
+                              @NotNull(message = MESSAGE_IF_NOT_NAME_USER) String username) {
         return cartService.deactivate(username);
     }
 }

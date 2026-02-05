@@ -9,10 +9,14 @@ import java.io.Serializable;
 @EqualsAndHashCode(of = {"cart", "productId"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartProductsId implements Serializable {
-    final Cart cart;
-    final String productId;
+    Cart cart;
+    String productId;
+
+    public CartProductsId() {
+    }
 
     public CartProductsId(Cart cart, String productId) {
+        this();
         this.cart = cart;
         this.productId = productId;
     }

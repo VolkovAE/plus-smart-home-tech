@@ -10,6 +10,7 @@ public final class StringConstants {
     public static final String COLUMN_NAME_ENTITY_CART_ID = "cart_id";
     public static final String COLUMN_NAME_ENTITY_CART_USERNAME = "username";
     public static final String COLUMN_NAME_ENTITY_CART_ACTIVE = "active";
-    public static final String COLUMN_NAME_ENTITY_CART_PRODUCT_CART_ID = "cart_id";
     public static final String COLUMN_NAME_ENTITY_CART_PRODUCT_PRODUCT_ID = "product_id";
+    public static final String MESSAGE_IF_NOT_NAME_USER = "Имя пользователя не должно быть пустым.";
+    public static final String MESSAGE_IF_NOT_PRODUCTS = "Не указан список продуктов при добавлении в корзину.";
 }
