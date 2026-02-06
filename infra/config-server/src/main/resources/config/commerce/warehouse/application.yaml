@@ -16,7 +16,6 @@ spring:
       mode: always
       continue-on-error: false
       schema-locations: classpath:/DB/DDL/schema.sql
-      data-locations: classpath:/DB/Init/data.sql
   # JPA
   jpa:
     hibernate:
