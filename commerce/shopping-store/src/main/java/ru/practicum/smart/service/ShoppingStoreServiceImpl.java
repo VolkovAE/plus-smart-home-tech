@@ -105,8 +105,8 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     }
 
     private Product getProductById(String productId) {
-        return productRepository.findById(productId).orElseThrow(() ->
-                new NotFoundException("Продукт с ID " + productId + " не существует", log));
+        return productRepository.getReferenceById(productId);//.orElseThrow(() ->
+                //new NotFoundException("Продукт с ID " + productId + " не существует", log));
     }
 
     private boolean checkIfProductExists(String productId) {
