@@ -76,11 +76,20 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
 
     @Override
     public Boolean deleteProduct(String productId) {
+        log.info("Ситуация 1. Запрос на удаление продукта с ID = {}", productId);
+
         Product product = getProductById(productId);
+
+        log.info("Ситуация 1. Продукт найден с ID = {}", product.toString());
 
         product.setProductState(ProductState.DEACTIVATE);
 
+        log.info("Ситуация 1. Изменено состояние объекта = {}", product.getProductState());
+
         Product newProduct = productRepository.save(product);
+
+        log.info("Ситуация 1. Записано состояние объекта в БД = {}", newProduct.getProductState());
+        log.info("Ситуация 1. Возвращаемый результат = {}", newProduct.getProductState().equals(ProductState.DEACTIVATE));
 
         return newProduct.getProductState().equals(ProductState.DEACTIVATE);
     }
