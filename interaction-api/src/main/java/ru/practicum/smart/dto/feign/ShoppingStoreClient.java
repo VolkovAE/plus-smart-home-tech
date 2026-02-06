@@ -31,8 +31,6 @@ public interface ShoppingStoreClient {
     @PostMapping(PATH_SHOPPING_STORE_REMOVE)
     Boolean deleteProduct(@RequestBody UUID productId);
 
-    //    @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
-//    Boolean setQuantityState(@RequestBody ProductQuantityDto productQuantityDto);
     @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
     Boolean setQuantityState(UUID productId, QuantityState quantityState);
 }

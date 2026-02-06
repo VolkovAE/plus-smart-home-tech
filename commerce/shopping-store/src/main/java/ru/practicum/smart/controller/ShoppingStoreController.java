@@ -61,12 +61,6 @@ public class ShoppingStoreController implements ShoppingStoreClient {
         return storeService.deleteProduct(productId);
     }
 
-//    @Override
-//    @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
-//    public Boolean setQuantityState(@RequestBody ProductQuantityDto productQuantityDto) {
-//        return storeService.updateQuantity(productQuantityDto);
-//    }
-
     @Override
     @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
     public Boolean setQuantityState(@RequestParam UUID productId,
