@@ -7,9 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.smart.dto.product.ProductDto;
-import ru.practicum.smart.dto.product.ProductQuantityDto;
 import ru.practicum.smart.enums.product.ProductCategory;
 import ru.practicum.smart.enums.product.ProductState;
+import ru.practicum.smart.enums.product.QuantityState;
 import ru.practicum.smart.exception.NotFoundException;
 import ru.practicum.smart.exception.ValidationException;
 import ru.practicum.smart.mapper.ProductMapper;
@@ -98,25 +98,46 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         return newProduct.getProductState().equals(ProductState.DEACTIVATE);
     }
 
+//    @Override
+//    public Boolean updateQuantity(ProductQuantityDto productQuantityDto) {
+//        log.info("Ситуация 2. Запрос на изменение количества {}", productQuantityDto);
+//
+//        Product product = getProductById(productQuantityDto.getProductId());
+//
+//        log.info("Ситуация 2. Получен продукт {}", product);
+//
+//        product.setQuantityState(productQuantityDto.getQuantityState());
+//
+//        log.info("Ситуация 2. Установил объекту новое значение количества {}", product);
+//
+//        Product newProduct = productRepository.save(product);
+//
+//        log.info("Ситуация 2. Записал в БД новое значение количества {}", newProduct);
+//
+//        log.info("Ситуация 2. Ожидаемый возврат {}", newProduct.getQuantityState().equals(productQuantityDto.getQuantityState()));
+//
+//        return newProduct.getQuantityState().equals(productQuantityDto.getQuantityState());
+//    }
+
     @Override
-    public Boolean updateQuantity(ProductQuantityDto productQuantityDto) {
-        log.info("Ситуация 2. Запрос на изменение количества {}", productQuantityDto);
+    public Boolean updateQuantity(UUID productId, QuantityState quantityState) {
+        log.info("Ситуация 2.1 Запрос на изменение количества продукта ID {}", productId);
 
-        Product product = getProductById(productQuantityDto.getProductId());
+        Product product = getProductById(productId);
 
-        log.info("Ситуация 2. Получен продукт {}", product);
+        log.info("Ситуация 2.1 Получен продукт {}", product);
 
-        product.setQuantityState(productQuantityDto.getQuantityState());
+        product.setQuantityState(quantityState);
 
-        log.info("Ситуация 2. Установил объекту новое значение количества {}", product);
+        log.info("Ситуация 2.1 Установил объекту новое значение количества {}", product);
 
         Product newProduct = productRepository.save(product);
 
-        log.info("Ситуация 2. Записал в БД новое значение количества {}", newProduct);
+        log.info("Ситуация 2.1 Записал в БД новое значение количества {}", newProduct);
 
-        log.info("Ситуация 2. Ожидаемый возврат {}", newProduct.getQuantityState().equals(productQuantityDto.getQuantityState()));
+        log.info("Ситуация 2.1 Ожидаемый возврат {}", newProduct.getQuantityState().equals(quantityState));
 
-        return newProduct.getQuantityState().equals(productQuantityDto.getQuantityState());
+        return newProduct.getQuantityState().equals(quantityState);
     }
 
     private Product getProductById(UUID productId) {

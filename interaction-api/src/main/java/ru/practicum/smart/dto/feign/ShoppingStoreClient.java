@@ -6,8 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.smart.dto.product.ProductDto;
-import ru.practicum.smart.dto.product.ProductQuantityDto;
 import ru.practicum.smart.enums.product.ProductCategory;
+import ru.practicum.smart.enums.product.QuantityState;
 
 import java.util.UUID;
 
@@ -31,6 +31,8 @@ public interface ShoppingStoreClient {
     @PostMapping(PATH_SHOPPING_STORE_REMOVE)
     Boolean deleteProduct(@RequestBody UUID productId);
 
+    //    @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
+//    Boolean setQuantityState(@RequestBody ProductQuantityDto productQuantityDto);
     @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
-    Boolean setQuantityState(@RequestBody ProductQuantityDto productQuantityDto);
+    Boolean setQuantityState(UUID productId, QuantityState quantityState);
 }

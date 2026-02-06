@@ -10,8 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.smart.dto.feign.ShoppingStoreClient;
 import ru.practicum.smart.dto.product.ProductDto;
-import ru.practicum.smart.dto.product.ProductQuantityDto;
 import ru.practicum.smart.enums.product.ProductCategory;
+import ru.practicum.smart.enums.product.QuantityState;
 import ru.practicum.smart.service.ShoppingStoreService;
 
 import java.util.UUID;
@@ -61,9 +61,16 @@ public class ShoppingStoreController implements ShoppingStoreClient {
         return storeService.deleteProduct(productId);
     }
 
+//    @Override
+//    @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
+//    public Boolean setQuantityState(@RequestBody ProductQuantityDto productQuantityDto) {
+//        return storeService.updateQuantity(productQuantityDto);
+//    }
+
     @Override
     @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
-    public Boolean setQuantityState(@RequestBody ProductQuantityDto productQuantityDto) {
-        return storeService.updateQuantity(productQuantityDto);
+    public Boolean setQuantityState(@RequestParam UUID productId,
+                                    @RequestParam QuantityState quantityState) {
+        return storeService.updateQuantity(productId, quantityState);
     }
 }
