@@ -100,10 +100,21 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
 
     @Override
     public Boolean updateQuantity(ProductQuantityDto productQuantityDto) {
+        log.info("Ситуация 2. Запрос на изменение количества {}", productQuantityDto);
+
         Product product = getProductById(productQuantityDto.getProductId());
 
+        log.info("Ситуация 2. Получен продукт {}", product);
+
         product.setQuantityState(productQuantityDto.getQuantityState());
+
+        log.info("Ситуация 2. Установил объекту новое значение количества {}", product);
+
         Product newProduct = productRepository.save(product);
+
+        log.info("Ситуация 2. Записал в БД новое значение количества {}", newProduct);
+
+        log.info("Ситуация 2. Ожидаемый возврат {}", newProduct.getQuantityState().equals(productQuantityDto.getQuantityState()));
 
         return newProduct.getQuantityState().equals(productQuantityDto.getQuantityState());
     }
