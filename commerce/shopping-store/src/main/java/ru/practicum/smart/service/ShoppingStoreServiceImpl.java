@@ -41,19 +41,19 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     }
 
     @Override
-    public ProductDto getProduct(String productId) {
-        Product product = getProductById(UUID.fromString(productId));
+    public ProductDto getProduct(UUID productId) {
+        Product product = getProductById(productId);
 
         return productMapper.toProductDto(product);
     }
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
-        String productId = productDto.getProductId();
+        UUID productId = productDto.getProductId();
 
         if (productId != null) {
             // в описании к заданию передается, в тестах гита убрали:(
-            if (checkIfProductExists(UUID.fromString(productId)))
+            if (checkIfProductExists(productId))
                 throw new ValidationException("Продукт с ID " + productId + " уже существует.", log);
         }
 
@@ -67,9 +67,9 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
 
     @Override
     public ProductDto updateProduct(ProductDto productDto) {
-        String productId = productDto.getProductId();
+        UUID productId = productDto.getProductId();
 
-        if (!checkIfProductExists(UUID.fromString(productId)))
+        if (!checkIfProductExists(productId))
             throw new NotFoundException("Продукт с ID " + productId + " не существует.", log);
 
         Product product = productMapper.toProduct(productDto);
@@ -79,10 +79,10 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     }
 
     @Override
-    public Boolean deleteProduct(String productId) {
+    public Boolean deleteProduct(UUID productId) {
         log.info("Ситуация 1. Запрос на удаление продукта с ID = {}", productId);
 
-        Product product = getProductById(UUID.fromString(productId));
+        Product product = getProductById(productId);
 
         log.info("Ситуация 1. Продукт найден с ID = {}", product.toString());
 
@@ -100,7 +100,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
 
     @Override
     public Boolean updateQuantity(ProductQuantityDto productQuantityDto) {
-        Product product = getProductById(UUID.fromString(productQuantityDto.getProductId()));
+        Product product = getProductById(productQuantityDto.getProductId());
 
         product.setQuantityState(productQuantityDto.getQuantityState());
         Product newProduct = productRepository.save(product);

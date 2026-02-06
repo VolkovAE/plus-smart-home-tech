@@ -9,6 +9,8 @@ import ru.practicum.smart.dto.product.ProductDto;
 import ru.practicum.smart.dto.product.ProductQuantityDto;
 import ru.practicum.smart.enums.product.ProductCategory;
 
+import java.util.UUID;
+
 import static ru.practicum.smart.dto.util.StringConstants.*;
 
 @FeignClient(name = NAME_SERVICE_SHOPPING_STORE, path = PATH_SHOPPING_STORE)
@@ -17,7 +19,7 @@ public interface ShoppingStoreClient {
     Page<ProductDto> getProductsByCategory(@RequestParam(PATH_SHOPPING_STORE_CATEGORY) ProductCategory category, Pageable pageable);
 
     @GetMapping(PATH_SHOPPING_STORE_PRODUCT_ID)
-    ProductDto getProduct(@PathVariable String productId);
+    ProductDto getProduct(@PathVariable UUID productId);
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
@@ -27,7 +29,7 @@ public interface ShoppingStoreClient {
     ProductDto updateProduct(@RequestBody ProductDto productDto);
 
     @PostMapping(PATH_SHOPPING_STORE_REMOVE)
-    Boolean deleteProduct(@RequestBody String productId);
+    Boolean deleteProduct(@RequestBody UUID productId);
 
     @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
     Boolean setQuantityState(@RequestBody ProductQuantityDto productQuantityDto);

@@ -14,6 +14,8 @@ import ru.practicum.smart.dto.product.ProductQuantityDto;
 import ru.practicum.smart.enums.product.ProductCategory;
 import ru.practicum.smart.service.ShoppingStoreService;
 
+import java.util.UUID;
+
 import static ru.practicum.smart.dto.util.StringConstants.*;
 
 @Slf4j
@@ -36,7 +38,7 @@ public class ShoppingStoreController implements ShoppingStoreClient {
 
     @Override
     @GetMapping(PATH_SHOPPING_STORE_PRODUCT_ID)
-    public ProductDto getProduct(@PathVariable String productId) {
+    public ProductDto getProduct(@PathVariable UUID productId) {
         return storeService.getProduct(productId);
     }
 
@@ -55,7 +57,7 @@ public class ShoppingStoreController implements ShoppingStoreClient {
 
     @Override
     @PostMapping(PATH_SHOPPING_STORE_REMOVE)
-    public Boolean deleteProduct(@RequestBody String productId) {
+    public Boolean deleteProduct(@RequestBody UUID productId) {
         return storeService.deleteProduct(productId);
     }
 

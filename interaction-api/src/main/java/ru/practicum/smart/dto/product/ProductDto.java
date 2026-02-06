@@ -10,13 +10,14 @@ import ru.practicum.smart.enums.product.ProductState;
 import ru.practicum.smart.enums.product.QuantityState;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(of = {"productId"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDto {
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
-    String productId;
+    UUID productId;
 
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
     String productName;

@@ -8,13 +8,15 @@ import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import ru.practicum.smart.enums.product.QuantityState;
 
+import java.util.UUID;
+
 @Data
 @EqualsAndHashCode(of = {"productId"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductQuantityDto {
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_WRITE, value = "productId")
-    String productId;
+    UUID productId;
 
     @NotNull
     @JsonProperty(access = JsonProperty.Access.READ_WRITE, value = "quantityState")
