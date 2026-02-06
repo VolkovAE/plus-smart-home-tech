@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static ru.practicum.smart.util.StringConstants.*;
 
@@ -23,7 +24,7 @@ import static ru.practicum.smart.util.StringConstants.*;
 public class QuantityProductInWarehouse {
     @Id
     @Column(name = COLUMN_NAME_ENTITY_PRODUCT_ID, nullable = false)
-    String productId;
+    UUID productId;
 
     @Column(name = COLUMN_NAME_ENTITY_PRODUCT_DEPTH, precision = 15, scale = 2)
     BigDecimal depth;
