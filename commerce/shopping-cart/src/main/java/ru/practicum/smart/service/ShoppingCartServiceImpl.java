@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.practicum.smart.dto.cart.CartDto;
 import ru.practicum.smart.dto.cart.NewQuantityProduct;
+import ru.practicum.smart.dto.feign.WarehouseClient;
 import ru.practicum.smart.exception.EmptyUsernameException;
 import ru.practicum.smart.exception.NotFoundException;
+import ru.practicum.smart.exception.NotRequestQuantityProductException;
 import ru.practicum.smart.exception.ValidationException;
 import ru.practicum.smart.mapper.CartMapper;
 import ru.practicum.smart.model.Cart;
@@ -29,11 +31,15 @@ import static ru.practicum.smart.util.StringConstants.*;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
+    private final WarehouseClient warehouseClient;
 
     @Autowired
-    public ShoppingCartServiceImpl(CartRepository cartRepository, CartMapper cartMapper) {
+    public ShoppingCartServiceImpl(CartRepository cartRepository,
+                                   CartMapper cartMapper,
+                                   WarehouseClient warehouseClient) {
         this.cartRepository = cartRepository;
         this.cartMapper = cartMapper;
+        this.warehouseClient = warehouseClient;
     }
 
     @Override
@@ -70,7 +76,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             }
         }
 
-        // todo проверить остаток продуктов на складе
+        checkProductOnWarehouse(cart);
 
         cart = cartRepository.save(cart);
 
@@ -128,7 +134,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         existingProduct.get().setQuantity(newQuantity);
 
-        // todo проверить остаток на складе
+        checkProductOnWarehouse(cart);
 
         cart = cartRepository.save(cart);
 
@@ -188,5 +194,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                         return newCart;
                     } else throw new NotFoundException("Не найдена активная корзина.");
                 });
+    }
+
+    private void checkProductOnWarehouse(Cart cart) {
+        try {
+            warehouseClient.checkProductOnWarehouse(cartMapper.toCartDto(cart));
+        } catch (NotRequestQuantityProductException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException("При обращении к сервису проверки остатка продукта на складе возникла ошибка: " + e.getMessage());
+        }
     }
 }
