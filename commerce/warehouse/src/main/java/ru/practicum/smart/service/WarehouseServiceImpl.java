@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -36,7 +37,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     public void addNewProduct(NewProductDto newProductDto) {
-        if (warehouseRepository.existsById(newProductDto.getProductId())) {
+        if (warehouseRepository.existsById(UUID.fromString(newProductDto.getProductId()))) {
             throw new DuplicatedDataException("Продукт с ID = " + newProductDto.getProductId() + " уже зарегистрирован на складе.");
         }
 
@@ -93,7 +94,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     private QuantityProductInWarehouse getProduct(String productId) {
-        return warehouseRepository.findById(productId).orElseThrow(() ->
+        return warehouseRepository.findById(UUID.fromString(productId)).orElseThrow(() ->
                 new NotFoundException("На складе нет продукта с ID " + productId + "."));
     }
 }
