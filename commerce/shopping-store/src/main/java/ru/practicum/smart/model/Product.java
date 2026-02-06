@@ -22,6 +22,7 @@ import static ru.practicum.smart.util.StringConstants.TABLE_NAME_ENTITY_PRODUCT;
 public class Product {
     @Id
     @Column(name = "product_Id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     String productId;
 
     @Column(nullable = false, name = "product_Name")

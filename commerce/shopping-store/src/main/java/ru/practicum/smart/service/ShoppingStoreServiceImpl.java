@@ -49,8 +49,11 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     public ProductDto createProduct(ProductDto productDto) {
         String productId = productDto.getProductId();
 
-        if (checkIfProductExists(productId))
-            throw new ValidationException("Продукт с ID " + productId + " уже существует.", log);
+        if (productId != null) {
+            // в описании к заданию передается, в тестах гита убрали:(
+            if (checkIfProductExists(productId))
+                throw new ValidationException("Продукт с ID " + productId + " уже существует.", log);
+        }
 
         Product product = productMapper.toProduct(productDto);
         Product newProduct = productRepository.save(product);
