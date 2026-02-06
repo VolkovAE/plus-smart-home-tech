@@ -33,16 +33,33 @@ services:
                              --partitions 1 --replication-factor 1 --if-not-exists \
                              --bootstrap-server kafka:29092'"
     init: true
+#
+#  postgres:
+#    image: postgres:16.1
+#    container_name: postgres-analyzer
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - ./db/volumes/postgres:/var/lib/postgresql/data/
+#    environment:
+#      - POSTGRES_DB=telemetry_analyzer
+#      - POSTGRES_USER=dbuser
+#      - POSTGRES_PASSWORD=12345
+#    healthcheck:
+#      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+#      timeout: 5s
+#      interval: 5s
+#      retries: 10
 
-  postgres:
+  postgres-shop:
     image: postgres:16.1
-    container_name: postgres-analyzer
+    container_name: postgres-commerce
     ports:
       - "5432:5432"
     volumes:
-      - ./db/volumes/postgres:/var/lib/postgresql/data/
+      - ./db/volumes/postgres/shop:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_DB=telemetry_analyzer
+      - POSTGRES_DB=commerce
       - POSTGRES_USER=dbuser
       - POSTGRES_PASSWORD=12345
     healthcheck:
