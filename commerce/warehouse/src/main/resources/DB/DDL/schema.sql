@@ -4,7 +4,7 @@ CREATE SCHEMA IF NOT EXISTS warehouse;
 
 CREATE TABLE IF NOT EXISTS warehouse.products
 (
-    product_Id VARCHAR(36) PRIMARY KEY,
+    product_Id UUID PRIMARY KEY,
     depth NUMERIC(15,2),
     height NUMERIC(15,2),
     width NUMERIC(15,2),
