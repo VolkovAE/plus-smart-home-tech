@@ -10,6 +10,7 @@ import ru.practicum.smart.enums.product.ProductState;
 import ru.practicum.smart.enums.product.QuantityState;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static ru.practicum.smart.util.StringConstants.SHEMA_NAME;
 import static ru.practicum.smart.util.StringConstants.TABLE_NAME_ENTITY_PRODUCT;
@@ -23,7 +24,7 @@ public class Product {
     @Id
     @Column(name = "product_Id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    String productId;
+    UUID productId;
 
     @Column(nullable = false, name = "product_Name")
     String productName;

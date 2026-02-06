@@ -16,6 +16,8 @@ import ru.practicum.smart.mapper.ProductMapper;
 import ru.practicum.smart.model.Product;
 import ru.practicum.smart.storage.ProductRepository;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @Qualifier("StoreServiceImpl")
@@ -40,7 +42,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
 
     @Override
     public ProductDto getProduct(String productId) {
-        Product product = getProductById(productId);
+        Product product = getProductById(UUID.fromString(productId));
 
         return productMapper.toProductDto(product);
     }
@@ -51,12 +53,14 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
 
         if (productId != null) {
             // в описании к заданию передается, в тестах гита убрали:(
-            if (checkIfProductExists(productId))
+            if (checkIfProductExists(UUID.fromString(productId)))
                 throw new ValidationException("Продукт с ID " + productId + " уже существует.", log);
         }
 
         Product product = productMapper.toProduct(productDto);
         Product newProduct = productRepository.save(product);
+
+        log.info("Создан новый продукт с ID {}", newProduct.getProductId());
 
         return productMapper.toProductDto(newProduct);
     }
@@ -65,7 +69,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     public ProductDto updateProduct(ProductDto productDto) {
         String productId = productDto.getProductId();
 
-        if (!checkIfProductExists(productId))
+        if (!checkIfProductExists(UUID.fromString(productId)))
             throw new NotFoundException("Продукт с ID " + productId + " не существует.", log);
 
         Product product = productMapper.toProduct(productDto);
@@ -78,7 +82,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
     public Boolean deleteProduct(String productId) {
         log.info("Ситуация 1. Запрос на удаление продукта с ID = {}", productId);
 
-        Product product = getProductById(productId);
+        Product product = getProductById(UUID.fromString(productId));
 
         log.info("Ситуация 1. Продукт найден с ID = {}", product.toString());
 
@@ -96,7 +100,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
 
     @Override
     public Boolean updateQuantity(ProductQuantityDto productQuantityDto) {
-        Product product = getProductById(productQuantityDto.getProductId());
+        Product product = getProductById(UUID.fromString(productQuantityDto.getProductId()));
 
         product.setQuantityState(productQuantityDto.getQuantityState());
         Product newProduct = productRepository.save(product);
@@ -104,12 +108,12 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         return newProduct.getQuantityState().equals(productQuantityDto.getQuantityState());
     }
 
-    private Product getProductById(String productId) {
-        return productRepository.getReferenceById(productId);//.orElseThrow(() ->
-                //new NotFoundException("Продукт с ID " + productId + " не существует", log));
+    private Product getProductById(UUID productId) {
+        return productRepository.findById(productId).orElseThrow(() ->
+                new NotFoundException("Продукт с ID " + productId + " не существует", log));
     }
 
-    private boolean checkIfProductExists(String productId) {
+    private boolean checkIfProductExists(UUID productId) {
         return productRepository.existsById(productId);
     }
 }
