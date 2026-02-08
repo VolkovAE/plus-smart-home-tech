@@ -1,4 +1,4 @@
-package ru.practicum.smart.error.handling;
+package ru.practicum.smart.handling;
 
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -8,19 +8,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.smart.exception.EmptyUsernameException;
-import ru.practicum.smart.exception.NotFoundException;
-import ru.practicum.smart.exception.ValidationException;
-import ru.practicum.smart.handling.ErrorResponse;
-import ru.practicum.smart.handling.ValidationErrorResponse;
-import ru.practicum.smart.handling.Violation;
+import ru.practicum.smart.exception.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class ErrorHandlingControllerAdviceGateway {
-    private static final Logger log = LoggerFactory.getLogger(ErrorHandlingControllerAdviceGateway.class);
+public class ErrorHandlingControllerWarehouse {
+    private static final Logger log = LoggerFactory.getLogger(ErrorHandlingControllerWarehouse.class);
 
     /**
      * Отлавливаю исключения типа ConstraintViolationException, ошибка в параметрах запроса, параметрах пути.
@@ -72,7 +67,7 @@ public class ErrorHandlingControllerAdviceGateway {
         return new ValidationErrorResponse(violations);
     }
 
-    @ExceptionHandler({ValidationException.class, NotFoundException.class})
+    @ExceptionHandler({ValidationException.class, NotFoundException.class, DuplicatedDataException.class, NotRequestQuantityProductException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ValidationErrorResponse onValidationException(Exception e) {
         Violation violation = new Violation("-", e.getMessage());
