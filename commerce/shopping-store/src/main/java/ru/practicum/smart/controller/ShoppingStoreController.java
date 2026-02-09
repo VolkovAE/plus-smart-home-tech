@@ -44,7 +44,6 @@ public class ShoppingStoreController implements ShoppingStoreClient {
 
     @Override
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
     public ProductDto createProduct(@RequestBody ProductDto productDto) {
         return storeService.createProduct(productDto);
     }

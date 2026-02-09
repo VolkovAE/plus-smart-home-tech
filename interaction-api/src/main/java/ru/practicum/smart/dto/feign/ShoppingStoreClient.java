@@ -22,7 +22,6 @@ public interface ShoppingStoreClient {
     ProductDto getProduct(@PathVariable UUID productId);
 
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
     ProductDto createProduct(@RequestBody ProductDto productDto);
 
     @PostMapping
