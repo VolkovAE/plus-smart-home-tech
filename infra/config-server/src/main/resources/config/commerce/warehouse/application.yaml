@@ -6,10 +6,10 @@ spring:
       enabled: ALWAYS
   # DataSource
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/commerce
-    username: dbuser
-    password: 12345
+    driver-class-name: ${COMMERCE_POSTGRESQL_DRIVER:org.postgresql.Driver}
+    url: ${COMMERCE_POSTGRESQL_URL:jdbc:postgresql://localhost:5432/commerce}
+    username: ${COMMERCE_POSTGRESQL_USER:dbuser}
+    password: ${COMMERCE_POSTGRESQL_PASSWORD:12345}
   # SQL
   sql:
     init:
