@@ -6,9 +6,4 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {
         super(message);
     }
-
-    public NotFoundException(String message, Logger logger) {
-        this(message);
-        logger.error(message);
-    }
 }

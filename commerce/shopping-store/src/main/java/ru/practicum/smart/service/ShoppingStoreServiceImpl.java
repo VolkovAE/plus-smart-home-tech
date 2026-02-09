@@ -54,7 +54,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         if (productId != null) {
             // в описании к заданию передается, в тестах гита убрали:(
             if (checkIfProductExists(productId))
-                throw new ValidationException("Продукт с ID " + productId + " уже существует.", log);
+                throw new ValidationException("Продукт с ID " + productId + " уже существует.");
         }
 
         Product product = productMapper.toProduct(productDto);
@@ -70,7 +70,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
         UUID productId = productDto.getProductId();
 
         if (!checkIfProductExists(productId))
-            throw new NotFoundException("Продукт с ID " + productId + " не существует.", log);
+            throw new NotFoundException("Продукт с ID " + productId + " не существует.");
 
         Product product = productMapper.toProduct(productDto);
         Product newProduct = productRepository.save(product);
@@ -121,7 +121,7 @@ public class ShoppingStoreServiceImpl implements ShoppingStoreService {
 
     private Product getProductById(UUID productId) {
         return productRepository.findById(productId).orElseThrow(() ->
-                new NotFoundException("Продукт с ID " + productId + " не существует", log));
+                new NotFoundException("Продукт с ID " + productId + " не существует"));
     }
 
     private boolean checkIfProductExists(UUID productId) {
