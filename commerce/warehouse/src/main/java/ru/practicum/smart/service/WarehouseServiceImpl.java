@@ -37,7 +37,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     public void addNewProduct(NewProductDto newProductDto) {
-        if (warehouseRepository.existsById(UUID.fromString(newProductDto.getProductId()))) {
+        if (warehouseRepository.existsById(newProductDto.getProductId())) {
             throw new DuplicatedDataException("Продукт с ID = " + newProductDto.getProductId() + " уже зарегистрирован на складе.");
         }
 
@@ -65,8 +65,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         BigDecimal deliveryVolume = BigDecimal.ZERO;
         boolean fragile = false;   // если один продукт хрупкий, то считаем true
 
-        for (Map.Entry<String, Integer> entry : cartDto.getProducts().entrySet()) {
-            String productId = entry.getKey();
+        for (Map.Entry<UUID, Integer> entry : cartDto.getProducts().entrySet()) {
+            UUID productId = entry.getKey();
             Integer requestQuantity = entry.getValue();
 
             QuantityProductInWarehouse product = getProduct(productId);
@@ -93,8 +93,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         return new BookedProductsDto(deliveryWeight.doubleValue(), deliveryVolume.doubleValue(), fragile);
     }
 
-    private QuantityProductInWarehouse getProduct(String productId) {
-        return warehouseRepository.findById(UUID.fromString(productId)).orElseThrow(() ->
+    private QuantityProductInWarehouse getProduct(UUID productId) {
+        return warehouseRepository.findById(productId).orElseThrow(() ->
                 new NotFoundException("На складе нет продукта с ID " + productId + "."));
     }
 }

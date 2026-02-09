@@ -20,5 +20,5 @@ public class CartDto {
     @JsonAlias(value = {"shoppingCartId"})
     UUID cartId;
 
-    Map<String, Integer> products;
+    Map<UUID, Integer> products;
 }

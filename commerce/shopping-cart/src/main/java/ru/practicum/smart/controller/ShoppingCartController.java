@@ -13,6 +13,7 @@ import ru.practicum.smart.service.ShoppingCartService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static ru.practicum.smart.dto.util.StringConstants.*;
 
@@ -31,14 +32,14 @@ public class ShoppingCartController implements ShoppingCartClient {
     @Override
     @PutMapping
     public CartDto addProducts(@RequestParam String username,
-                               @RequestBody Map<String, Integer> products) {
+                               @RequestBody Map<UUID, Integer> products) {
         return cartService.addProducts(username, products);
     }
 
     @Override
     @PostMapping(PATH_SHOPPING_CART_REMOVE)
     public CartDto removeProducts(@RequestParam String username,
-                                  @RequestBody List<String> productIds) {
+                                  @RequestBody List<UUID> productIds) {
         return cartService.removeProducts(username, productIds);
     }
 

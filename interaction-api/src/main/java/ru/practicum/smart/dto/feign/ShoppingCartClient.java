@@ -8,6 +8,7 @@ import ru.practicum.smart.dto.cart.NewQuantityProduct;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static ru.practicum.smart.dto.util.StringConstants.*;
 
@@ -15,15 +16,15 @@ import static ru.practicum.smart.dto.util.StringConstants.*;
 public interface ShoppingCartClient {
     @PutMapping
     CartDto addProducts(@RequestParam String username,
-                               @RequestBody Map<String, Integer> products);
+                        @RequestBody Map<UUID, Integer> products);
 
     @PostMapping(PATH_SHOPPING_CART_REMOVE)
     CartDto removeProducts(@RequestParam String username,
-                                  @RequestBody List<String> productIds);
+                           @RequestBody List<UUID> productIds);
 
     @PostMapping(PATH_SHOPPING_CHANGE_QUANTITY)
     CartDto changeQuantity(@RequestParam String username,
-                                  @Valid @RequestBody NewQuantityProduct changeQuantity);
+                           @Valid @RequestBody NewQuantityProduct changeQuantity);
 
     @GetMapping
     CartDto getActiveCart(@RequestParam String username);

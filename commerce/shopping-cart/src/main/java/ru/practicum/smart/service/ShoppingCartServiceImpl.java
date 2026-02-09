@@ -16,10 +16,7 @@ import ru.practicum.smart.model.Cart;
 import ru.practicum.smart.model.CartProducts;
 import ru.practicum.smart.storage.CartRepository;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,7 +40,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public CartDto addProducts(String username, Map<String, Integer> products) {
+    public CartDto addProducts(String username, Map<UUID, Integer> products) {
         // Проверка имени пользователя
         checkUserName(username);
 
@@ -54,11 +51,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Cart cart = getActiveCartByUserName(username, true);
 
         // Добавляем переданные продукты в корзину
-        Map<String, CartProducts> existingProducts = cart.getProducts().stream()
+        Map<UUID, CartProducts> existingProducts = cart.getProducts().stream()
                 .collect(Collectors.toMap(CartProducts::getProductId, Function.identity()));
 
-        for (Map.Entry<String, Integer> entry : products.entrySet()) {
-            String productId = entry.getKey();
+        for (Map.Entry<UUID, Integer> entry : products.entrySet()) {
+            UUID productId = entry.getKey();
             Integer quantity = entry.getValue();
 
             if (quantity == null || quantity < 1)
@@ -84,7 +81,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public CartDto removeProducts(String username, List<String> productIds) {
+    public CartDto removeProducts(String username, List<UUID> productIds) {
         // Проверка имени пользователя
         checkUserName(username);
 
@@ -95,7 +92,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Cart cart = getActiveCartByUserName(username, false);
 
         // Удаляем продукты из корзины
-        Set<String> curProductIds = cart.getProducts().stream()
+        Set<UUID> curProductIds = cart.getProducts().stream()
                 .map(CartProducts::getProductId)
                 .collect(Collectors.toSet());
 
@@ -124,7 +121,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Cart cart = getActiveCartByUserName(username, false);
 
         // Изменяем количество по одному из продуктов
-        String productId = changeQuantity.getProductId();
+        UUID productId = changeQuantity.getProductId();
         Integer newQuantity = changeQuantity.getNewQuantity();
 
         Optional<CartProducts> existingProduct = cart.getProducts().stream()
@@ -170,17 +167,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private void checkUserName(String username) {
         if (username == null || username.isEmpty())
-            throw new EmptyUsernameException(MESSAGE_IF_NOT_NAME_USER, log);
+            throw new EmptyUsernameException(MESSAGE_IF_NOT_NAME_USER);
     }
 
-    private void checkProducts(Map<String, Integer> products) {
+    private void checkProducts(Map<UUID, Integer> products) {
         if (products == null || products.isEmpty())
-            throw new ValidationException(MESSAGE_IF_NOT_PRODUCTS, log);
+            throw new ValidationException(MESSAGE_IF_NOT_PRODUCTS);
     }
 
-    private void checkProducts(List<String> products) {
+    private void checkProducts(List<UUID> products) {
         if (products == null || products.isEmpty())
-            throw new ValidationException(MESSAGE_IF_NOT_PRODUCTS, log);
+            throw new ValidationException(MESSAGE_IF_NOT_PRODUCTS);
     }
 
     private Cart getActiveCartByUserName(String username, boolean createNew) {

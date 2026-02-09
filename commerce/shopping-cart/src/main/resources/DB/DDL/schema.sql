@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS shopping_cart.Carts (
 
 CREATE TABLE IF NOT EXISTS shopping_cart.cart_product (
     cart_id UUID NOT NULL REFERENCES shopping_cart.carts(cart_id) ON DELETE CASCADE,
-    product_id VARCHAR(36) NOT NULL,
+    product_id UUID NOT NULL,
     quantity INTEGER NOT NULL,
     PRIMARY KEY (cart_id, product_id)
 );

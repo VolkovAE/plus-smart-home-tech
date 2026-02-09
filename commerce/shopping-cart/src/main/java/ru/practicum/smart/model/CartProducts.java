@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.UUID;
+
 import static ru.practicum.smart.util.StringConstants.*;
 
 @Entity
@@ -24,7 +26,7 @@ public class CartProducts {
 
     @Id
     @Column(name = COLUMN_NAME_ENTITY_CART_PRODUCT_PRODUCT_ID, nullable = false)
-    String productId;
+    UUID productId;
 
     @Column(nullable = false)
     Integer quantity;

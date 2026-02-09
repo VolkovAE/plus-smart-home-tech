@@ -5,17 +5,18 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @EqualsAndHashCode(of = {"cart", "productId"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartProductsId implements Serializable {
     Cart cart;
-    String productId;
+    UUID productId;
 
     public CartProductsId() {
     }
 
-    public CartProductsId(Cart cart, String productId) {
+    public CartProductsId(Cart cart, UUID productId) {
         this();
         this.cart = cart;
         this.productId = productId;

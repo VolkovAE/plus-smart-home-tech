@@ -6,12 +6,13 @@ import ru.practicum.smart.model.Cart;
 import ru.practicum.smart.model.CartProducts;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
 public class CartMapper {
     public CartDto toCartDto(Cart cart) {
-        Map<String, Integer> products = cart.getProducts().stream()
+        Map<UUID, Integer> products = cart.getProducts().stream()
                 .collect(Collectors.toMap(
                         CartProducts::getProductId,
                         CartProducts::getQuantity

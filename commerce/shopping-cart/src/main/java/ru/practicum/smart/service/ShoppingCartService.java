@@ -5,11 +5,12 @@ import ru.practicum.smart.dto.cart.NewQuantityProduct;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface ShoppingCartService {
-    CartDto addProducts(String username, Map<String, Integer> products);
+    CartDto addProducts(String username, Map<UUID, Integer> products);
 
-    CartDto removeProducts(String username, List<String> productIds);
+    CartDto removeProducts(String username, List<UUID> productIds);
 
     CartDto changeQuantity(String username, NewQuantityProduct changeQuantity);
 

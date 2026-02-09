@@ -11,7 +11,7 @@ import java.util.UUID;
 public class ProductMapper {
     public QuantityProductInWarehouse toProduct(NewProductDto dto) {
         return QuantityProductInWarehouse.builder()
-                .productId(UUID.fromString(dto.getProductId()))
+                .productId(dto.getProductId())
                 .depth(toBigDecimal(dto.getDimension().getDepth()))
                 .height(toBigDecimal(dto.getDimension().getHeight()))
                 .width(toBigDecimal(dto.getDimension().getWidth()))
