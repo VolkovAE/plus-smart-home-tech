@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@EqualsAndHashCode(of = {"depth", "height", "width"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DimensionDto {
     @NotNull

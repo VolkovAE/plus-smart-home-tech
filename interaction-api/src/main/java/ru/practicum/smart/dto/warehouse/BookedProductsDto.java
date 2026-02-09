@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor
-@EqualsAndHashCode(of = {"deliveryWeight", "deliveryVolume", "fragile"})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookedProductsDto {
     Double deliveryWeight;
