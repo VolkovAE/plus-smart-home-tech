@@ -24,7 +24,7 @@ spring:
   properties:
     hibernate:
       format_sql: true
-      default_schema: order
+      default_schema: order_
 logging:
   level:
     ru:

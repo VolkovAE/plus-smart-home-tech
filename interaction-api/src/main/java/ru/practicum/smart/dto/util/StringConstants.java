@@ -19,4 +19,17 @@ public final class StringConstants {
     public static final String PATH_WAREHOUSE_ADD = "/add";
     public static final String PATH_WAREHOUSE_ADDRESS = "/address";
     public static final String PATH_WAREHOUSE_CHECK = "/check";
+    public static final String PATH_SHOPPING_ORDER = "/api/v1/order";
+    public static final String NAME_SERVICE_ORDER = "order";
+    public static final String PATH_ORDER_RETURN = "/return";
+    public static final String PATH_ORDER_PAYMENT = "/payment";
+    public static final String PATH_ORDER_PAYMENT_FAILED = "/payment/failed";
+    public static final String PATH_ORDER_DELIVERY = "/delivery";
+    public static final String PATH_ORDER_DELIVERY_FAILED = "/delivery/failed";
+    public static final String PATH_ORDER_COMPLECTED = "/completed";
+    public static final String PATH_ORDER_CALCULATE_TOTAL = "/calculate/total";
+    public static final String PATH_ORDER_CALCULATE_DELIVERY = "/calculate/delivery";
+    public static final String PATH_ORDER_ASSEMBLY = "/assembly";
+    public static final String PATH_ORDER_ASSEMBLY_FAILED = "/assembly/failed";
+    public static final String REQUESTPARAM_ORDER_USERNAME = "username";
 }

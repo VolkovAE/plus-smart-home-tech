@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class ErrorHandlingControllerWarehouse {
-    private static final Logger log = LoggerFactory.getLogger(ErrorHandlingControllerWarehouse.class);
+public class ErrorHandlingControllerOrder {
+    private static final Logger log = LoggerFactory.getLogger(ErrorHandlingControllerOrder.class);
 
     /**
      * Отлавливаю исключения типа ConstraintViolationException, ошибка в параметрах запроса, параметрах пути.
@@ -70,7 +70,8 @@ public class ErrorHandlingControllerWarehouse {
     @ExceptionHandler({ValidationException.class,
             NotFoundException.class,
             DuplicatedDataException.class,
-            NotRequestQuantityProductException.class})
+            NotRequestQuantityProductException.class,
+            NoOrderFoundException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ValidationErrorResponse onValidationException(Exception e) {
         Violation violation = new Violation("-", e.getMessage());
