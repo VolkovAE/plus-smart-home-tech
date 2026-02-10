@@ -1,0 +1,22 @@
+package ru.practicum.smart.dto.util;
+
+public final class StringConstants {
+    private StringConstants() {
+    }
+
+    public static final String NAME_SERVICE_SHOPPING_CART = "shopping-cart";
+    public static final String PATH_SHOPPING_CART = "/api/v1/shopping-cart";
+    public static final String PATH_SHOPPING_CART_REMOVE = "/remove";
+    public static final String PATH_SHOPPING_CHANGE_QUANTITY = "/change-quantity";
+    public static final String NAME_SERVICE_SHOPPING_STORE = "shopping-store";
+    public static final String PATH_SHOPPING_STORE = "/api/v1/shopping-store";
+    public static final String PATH_SHOPPING_STORE_PRODUCT_ID = "/{productId}";
+    public static final String PATH_SHOPPING_STORE_CATEGORY = "category";
+    public static final String PATH_SHOPPING_STORE_REMOVE = "/removeProductFromStore";
+    public static final String PATH_SHOPPING_STORE_QUANTITY_STATE = "/quantityState";
+    public static final String NAME_SERVICE_WAREHOUSE = "warehouse";
+    public static final String PATH_WAREHOUSE = "/api/v1/warehouse";
+    public static final String PATH_WAREHOUSE_ADD = "/add";
+    public static final String PATH_WAREHOUSE_ADDRESS = "/address";
+    public static final String PATH_WAREHOUSE_CHECK = "/check";
+}
