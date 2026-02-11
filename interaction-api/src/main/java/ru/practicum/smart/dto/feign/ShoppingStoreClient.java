@@ -3,7 +3,6 @@ package ru.practicum.smart.dto.feign;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.smart.dto.product.ProductDto;
 import ru.practicum.smart.enums.product.ProductCategory;
@@ -31,5 +30,5 @@ public interface ShoppingStoreClient {
     Boolean deleteProduct(@RequestBody UUID productId);
 
     @PostMapping(PATH_SHOPPING_STORE_QUANTITY_STATE)
-    Boolean setQuantityState(UUID productId, QuantityState quantityState);
+    Boolean setQuantityState(@RequestParam UUID productId, @RequestParam QuantityState quantityState);
 }
