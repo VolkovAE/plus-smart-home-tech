@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.practicum.smart.dto.cart.CartDto;
-import ru.practicum.smart.dto.warehouse.AddProductOnWarehouse;
-import ru.practicum.smart.dto.warehouse.AddressDto;
-import ru.practicum.smart.dto.warehouse.BookedProductsDto;
-import ru.practicum.smart.dto.warehouse.NewProductDto;
+import ru.practicum.smart.dto.delivery.ShippedOrderDelivery;
+import ru.practicum.smart.dto.warehouse.*;
+
+import java.util.Map;
+import java.util.UUID;
 
 import static ru.practicum.smart.dto.util.StringConstants.*;
 
@@ -27,4 +28,13 @@ public interface WarehouseClient {
 
     @PostMapping(PATH_WAREHOUSE_CHECK)
     BookedProductsDto checkProductOnWarehouse(@Valid @RequestBody CartDto cartDto);
+
+    @PostMapping("/shipped")
+    void ShippedOrderToDelivery(@Valid @RequestBody ShippedOrderDelivery shipOrder);
+
+    @PostMapping("/return")
+    void returnProducts(@Valid @RequestBody Map<UUID, Integer> products);
+
+    @PostMapping("/assembly")
+    BookedProductsDto AssemblyToDelivery(@Valid @RequestBody AssemblyProductsForOrderRequest request);
 }

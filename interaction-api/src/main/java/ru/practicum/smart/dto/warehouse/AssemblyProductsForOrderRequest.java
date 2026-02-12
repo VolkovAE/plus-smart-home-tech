@@ -5,15 +5,15 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Map;
+import java.util.UUID;
+
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DimensionDto {
+public class AssemblyProductsForOrderRequest {
     @NotNull
-    Double depth;
+    Map<UUID, Integer> products;
 
     @NotNull
-    Double height;
-
-    @NotNull
-    Double width;
+    UUID orderId;
 }

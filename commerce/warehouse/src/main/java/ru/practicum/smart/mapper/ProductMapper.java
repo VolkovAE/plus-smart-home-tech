@@ -5,7 +5,6 @@ import ru.practicum.smart.dto.warehouse.NewProductDto;
 import ru.practicum.smart.model.QuantityProductInWarehouse;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Component
 public class ProductMapper {

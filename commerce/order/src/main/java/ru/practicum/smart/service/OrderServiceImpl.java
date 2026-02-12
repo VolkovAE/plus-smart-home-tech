@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto createOrder(CreateNewOrderRequest createNewOrderRequest) {
         CartDto cartDto = createNewOrderRequest.getShoppingCart();
 
-        // warehouseClient.checkAvailabilityForCart(shoppingCartDto); todo проверка карты как на QA
+        warehouseClient.checkProductOnWarehouse(cartDto);
 
         List<OrderItem> orderItems = orderMapper.productsToOrderItem(cartDto.getProducts());
 
@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
 
         Map<UUID, Integer> products = productReturnRequest.getProducts();
 
-        // warehouseClient.returnProducts(products); todo Проверка продуктов на складе QA
+        warehouseClient.returnProducts(products);
 
         return orderMapper.toOrderDto(order);
     }

@@ -1,19 +1,20 @@
-package ru.practicum.smart.dto.warehouse;
+package ru.practicum.smart.dto.delivery;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.util.UUID;
+
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DimensionDto {
+@AllArgsConstructor
+public class ShippedOrderDelivery {
     @NotNull
-    Double depth;
+    UUID orderId;
 
     @NotNull
-    Double height;
-
-    @NotNull
-    Double width;
+    UUID deliveryId;
 }

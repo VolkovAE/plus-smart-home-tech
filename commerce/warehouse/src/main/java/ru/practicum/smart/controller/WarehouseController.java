@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.smart.dto.cart.CartDto;
+import ru.practicum.smart.dto.delivery.ShippedOrderDelivery;
 import ru.practicum.smart.dto.feign.WarehouseClient;
-import ru.practicum.smart.dto.warehouse.AddProductOnWarehouse;
-import ru.practicum.smart.dto.warehouse.AddressDto;
-import ru.practicum.smart.dto.warehouse.BookedProductsDto;
-import ru.practicum.smart.dto.warehouse.NewProductDto;
+import ru.practicum.smart.dto.warehouse.*;
 import ru.practicum.smart.service.WarehouseService;
+
+import java.util.Map;
+import java.util.UUID;
 
 import static ru.practicum.smart.dto.util.StringConstants.*;
 
@@ -48,6 +49,24 @@ public class WarehouseController implements WarehouseClient {
     @Override
     @PostMapping(PATH_WAREHOUSE_CHECK)
     public BookedProductsDto checkProductOnWarehouse(@Valid @RequestBody CartDto cartDto) {
-        return warehouseService.checkProductOnWarehouse(cartDto);
+        return warehouseService.checkProductOnWarehouse(cartDto.getProducts());
+    }
+
+    @Override
+    @PostMapping("/shipped")
+    public void ShippedOrderToDelivery(@Valid @RequestBody ShippedOrderDelivery shippedOrderDelivery) {
+        warehouseService.ShippedOrderToDelivery(shippedOrderDelivery);
+    }
+
+    @Override
+    @PostMapping("/return")
+    public void returnProducts(@Valid @RequestBody Map<UUID, Integer> products) {
+        warehouseService.returnProducts(products);
+    }
+
+    @Override
+    @PostMapping("/assembly")
+    public BookedProductsDto AssemblyToDelivery(@Valid @RequestBody AssemblyProductsForOrderRequest request) {
+        return warehouseService.AssemblyToDelivery(request);
     }
 }

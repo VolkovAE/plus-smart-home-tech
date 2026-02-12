@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.practicum.smart.dto.feign.DeliveryClient;
 import ru.practicum.smart.dto.feign.OrderClient;
 import ru.practicum.smart.dto.feign.ShoppingStoreClient;
 import ru.practicum.smart.dto.order.OrderDto;
@@ -26,6 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentMapper paymentMapper;
     private final OrderClient orderClient;
     private final ShoppingStoreClient shoppingStoreClient;
+    private final DeliveryClient deliveryClient;
 
     private final BigDecimal nds = BigDecimal.valueOf(0.1); // НДС 10%
 
@@ -33,11 +35,13 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentServiceImpl(PaymentRepository paymentRepository,
                               PaymentMapper paymentMapper,
                               OrderClient orderClient,
-                              ShoppingStoreClient shoppingStoreClient) {
+                              ShoppingStoreClient shoppingStoreClient,
+                              DeliveryClient deliveryClient) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.orderClient = orderClient;
         this.shoppingStoreClient = shoppingStoreClient;
+        this.deliveryClient = deliveryClient;
     }
 
     @Override
@@ -97,9 +101,8 @@ public class PaymentServiceImpl implements PaymentService {
     private BigDecimal getDeliveryCost(OrderDto orderDto) {
         BigDecimal deliveryCost = orderDto.getDeliveryPrice();
 
-        if (deliveryCost == null || deliveryCost.equals(BigDecimal.ZERO)) {
-            //deliveryCost = deliveryClient.getDeliveryCost(orderDto);    // todo переделать определение стоимости доставки когда готов delivery
-        }
+        if (deliveryCost == null || deliveryCost.equals(BigDecimal.ZERO))
+            deliveryCost = deliveryClient.getDeliveryCost(orderDto);
 
         return deliveryCost;
     }
