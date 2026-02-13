@@ -38,7 +38,7 @@ public class OrderController implements OrderClient {
     }
 
     @Override
-    @PutMapping
+    @PostMapping
     public OrderDto createOrder(@Valid @RequestBody CreateNewOrderRequest createNewOrderRequest) {
         return orderService.createOrder(createNewOrderRequest);
     }
