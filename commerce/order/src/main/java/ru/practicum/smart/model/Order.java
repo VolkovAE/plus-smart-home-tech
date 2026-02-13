@@ -29,7 +29,7 @@ public class Order {
     @Column(name = COLUMN_NAME_CART_ID, nullable = false)
     UUID shoppingCartId;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = OrderItem.class)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = OrderItem.class)
     List<OrderItem> products = new ArrayList<>();
 
     @Column(name = COLUMN_NAME_PAYMENT_ID)
