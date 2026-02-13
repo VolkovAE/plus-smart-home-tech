@@ -33,19 +33,19 @@ public class DeliveryController implements DeliveryClient {
 
     @Override
     @PostMapping(PATH_DELIVERY_SUCCESSFUL)
-    public void deliverySuccessful(@RequestBody UUID orderId) {
+    public void deliverySuccessful(@PathVariable UUID orderId) {
         deliveryService.deliverySuccessful(orderId);
     }
 
     @Override
     @PostMapping(PATH_DELIVERY_PICKED)
-    public void deliveryPicked(@RequestBody UUID orderId) {
+    public void deliveryPicked(@PathVariable UUID orderId) {
         deliveryService.deliveryPicked(orderId);
     }
 
     @Override
     @PostMapping(PATH_DELIVERY_FAILED)
-    public void deliveryFailed(@RequestBody UUID orderId) {
+    public void deliveryFailed(@PathVariable UUID orderId) {
         deliveryService.deliveryFailed(orderId);
     }
 

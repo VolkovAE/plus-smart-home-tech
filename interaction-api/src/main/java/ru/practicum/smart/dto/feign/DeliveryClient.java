@@ -2,6 +2,7 @@ package ru.practicum.smart.dto.feign;
 
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,13 +20,13 @@ public interface DeliveryClient {
     DeliveryDto createDelivery(@Valid @RequestBody DeliveryDto deliveryDto);
 
     @PostMapping(PATH_DELIVERY_SUCCESSFUL)
-    void deliverySuccessful(@RequestBody UUID orderId);
+    void deliverySuccessful(@PathVariable UUID orderId);
 
     @PostMapping(PATH_DELIVERY_PICKED)
-    void deliveryPicked(@RequestBody UUID orderId);
+    void deliveryPicked(@PathVariable UUID orderId);
 
     @PostMapping(PATH_DELIVERY_FAILED)
-    void deliveryFailed(@RequestBody UUID orderId);
+    void deliveryFailed(@PathVariable UUID orderId);
 
     @PostMapping(PATH_DELIVERY_COST)
     BigDecimal getDeliveryCost(@RequestBody @Valid OrderDto orderDto);

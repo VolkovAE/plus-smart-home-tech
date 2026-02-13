@@ -40,8 +40,8 @@ public final class StringConstants {
     public static final String PATH_ORDER_FAILED = "/failed";
     public static final String NAME_SERVICE_DELIVERY = "delivery";
     public static final String PATH_DELIVERY = "/api/v1/delivery";
-    public static final String PATH_DELIVERY_SUCCESSFUL = "/successful";
-    public static final String PATH_DELIVERY_PICKED = "/picked";
-    public static final String PATH_DELIVERY_FAILED = "/failed";
+    public static final String PATH_DELIVERY_SUCCESSFUL = "/{orderId}/successful";
+    public static final String PATH_DELIVERY_PICKED = "/{orderId}/picked";
+    public static final String PATH_DELIVERY_FAILED = "/{orderId}/failed";
     public static final String PATH_DELIVERY_COST = "/cost";
 }
