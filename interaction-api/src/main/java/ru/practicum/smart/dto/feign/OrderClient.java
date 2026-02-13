@@ -1,5 +1,6 @@
 package ru.practicum.smart.dto.feign;
 
+import feign.FeignException;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
@@ -48,7 +49,7 @@ public interface OrderClient {
     OrderDto orderCalculateDelivery(@RequestBody UUID orderId);
 
     @PostMapping(PATH_ORDER_ASSEMBLY)
-    OrderDto orderAssembled(@RequestBody UUID orderId);
+    OrderDto orderAssembled(@RequestBody UUID orderId) throws FeignException;
 
     @PostMapping(PATH_ORDER_ASSEMBLY_FAILED)
     OrderDto orderAssembleFailed(@RequestBody UUID orderId);

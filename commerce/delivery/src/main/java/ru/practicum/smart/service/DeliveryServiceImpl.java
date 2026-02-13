@@ -1,5 +1,6 @@
 package ru.practicum.smart.service;
 
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,10 @@ import ru.practicum.smart.dto.feign.WarehouseClient;
 import ru.practicum.smart.dto.order.OrderDto;
 import ru.practicum.smart.dto.warehouse.AddressDto;
 import ru.practicum.smart.enums.delivery.DeliveryState;
+import ru.practicum.smart.exception.InternalServerErrorException;
 import ru.practicum.smart.exception.NoDeliveryFoundException;
+import ru.practicum.smart.exception.NotFoundServiceException;
+import ru.practicum.smart.exception.ServiceTemporarilyUnavailableException;
 import ru.practicum.smart.mapper.DeliveryMapper;
 import ru.practicum.smart.model.Delivery;
 import ru.practicum.smart.storage.DeliveryRepository;
@@ -64,14 +68,31 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public void deliveryPicked(UUID orderId) {
-        Delivery delivery = getDeliveryByOrderId(orderId);
-        delivery.setDeliveryState(DeliveryState.IN_PROGRESS);
+        String extOrderException = "Ошибка при установке заказу с ID " + orderId + " статуса на собран. Причина: ";
+        String extWarehouseException = "Ошибка при указании заказа в бронировании. Причина: ";
 
-        orderClient.orderAssembled(orderId);
+        // Сервис заказа - статус собран.
+        try {
+            orderClient.orderAssembled(orderId);
+        } catch (NotFoundServiceException | InternalServerErrorException | FeignException |
+                 ServiceTemporarilyUnavailableException e) {
+            throwNewException(e, extOrderException);
+        }
+
+        Delivery delivery = getDeliveryByOrderId(orderId);
 
         ShippedOrderDelivery shippedOrderDelivery = new ShippedOrderDelivery(orderId, delivery.getDeliveryId());
 
-        warehouseClient.ShippedOrderToDelivery(shippedOrderDelivery);
+        // Сервис склада - отправка в доставку (укажем в бронировании id доставки).
+        try {
+            warehouseClient.ShippedOrderToDelivery(shippedOrderDelivery);
+        } catch (NotFoundServiceException | InternalServerErrorException | FeignException |
+                 ServiceTemporarilyUnavailableException e) {
+            throwNewException(e, extWarehouseException);
+        }
+
+        // Если все сервисы отработали успешно, меняем статус доставки.
+        delivery.setDeliveryState(DeliveryState.IN_PROGRESS);
     }
 
     @Override
@@ -116,5 +137,9 @@ public class DeliveryServiceImpl implements DeliveryService {
                 || address.getHouse().contains(adr)
                 || address.getFlat().contains(adr)
         );
+    }
+
+    private <T extends Exception> void throwNewException(T e, String ext) {
+        throw new InternalServerErrorException(ext + e.getMessage());
     }
 }
