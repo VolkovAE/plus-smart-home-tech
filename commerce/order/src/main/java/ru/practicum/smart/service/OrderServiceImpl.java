@@ -1,5 +1,6 @@
 package ru.practicum.smart.service;
 
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -12,7 +13,10 @@ import ru.practicum.smart.dto.order.CreateNewOrderRequest;
 import ru.practicum.smart.dto.order.OrderDto;
 import ru.practicum.smart.dto.order.ProductReturnRequest;
 import ru.practicum.smart.enums.order.OrderState;
+import ru.practicum.smart.exception.InternalServerErrorException;
 import ru.practicum.smart.exception.NoOrderFoundException;
+import ru.practicum.smart.exception.NotFoundServiceException;
+import ru.practicum.smart.exception.ServiceTemporarilyUnavailableException;
 import ru.practicum.smart.mapper.OrderMapper;
 import ru.practicum.smart.model.Order;
 import ru.practicum.smart.model.OrderItem;
@@ -52,15 +56,21 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto createOrder(CreateNewOrderRequest createNewOrderRequest) {
         CartDto cartDto = createNewOrderRequest.getShoppingCart();
 
-        warehouseClient.checkProductOnWarehouse(cartDto);
+        String extWarehouseException = "Ошибка при проверке количества продукта на складе. Причина: ";
 
-        List<OrderItem> orderItems = orderMapper.productsToOrderItem(cartDto.getProducts());
+        // Сервис склада - проверка нужного количества продукта на складе.
+        try {
+            warehouseClient.checkProductOnWarehouse(cartDto);
+        } catch (NotFoundServiceException | InternalServerErrorException | FeignException |
+                 ServiceTemporarilyUnavailableException e) {
+            throwNewException(e, extWarehouseException);
+        }
 
-        Order order = Order.builder()
-                .shoppingCartId(cartDto.getCartId())
-                .products(orderItems)
-                .orderState(OrderState.NEW)
-                .build();
+        Order order = new Order();
+        order.setShoppingCartId(cartDto.getCartId());
+        order.setOrderState(OrderState.NEW);
+
+        List<OrderItem> orderItems = orderMapper.productsToOrderItem(cartDto.getProducts(), order);
 
         Order newOrder = orderRepository.save(order);
 
@@ -75,7 +85,15 @@ public class OrderServiceImpl implements OrderService {
 
         Map<UUID, Integer> products = productReturnRequest.getProducts();
 
-        warehouseClient.returnProducts(products);
+        String extWarehouseException = "Ошибка при возврате количества продукта на складе. Причина: ";
+
+        // Сервис склада - проверка нужного количества продукта на складе.
+        try {
+            warehouseClient.returnProducts(products);
+        } catch (NotFoundServiceException | InternalServerErrorException | FeignException |
+                 ServiceTemporarilyUnavailableException e) {
+            throwNewException(e, extWarehouseException);
+        }
 
         return orderMapper.toOrderDto(order);
     }
@@ -146,5 +164,9 @@ public class OrderServiceImpl implements OrderService {
     private Order getOrder(UUID orderId) {
         return orderRepository.findById(orderId)
                 .orElseThrow(() -> new NoOrderFoundException("Заказ c ID " + orderId + " не найден."));
+    }
+
+    private <T extends Exception> void throwNewException(T e, String ext) {
+        throw new InternalServerErrorException(ext + e.getMessage());
     }
 }

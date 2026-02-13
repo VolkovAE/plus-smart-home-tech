@@ -37,12 +37,13 @@ public class OrderMapper {
                 ));
     }
 
-    public List<OrderItem> productsToOrderItem(Map<UUID, Integer> products) {
+    public List<OrderItem> productsToOrderItem(Map<UUID, Integer> products, Order order) {
         return products.entrySet().stream()
                 .map(entry -> {
                     OrderItem item = new OrderItem();
                     item.setProductId(entry.getKey());
                     item.setQuantity(entry.getValue());
+                    item.setOrder(order);
                     return item;
                 })
                 .toList();
