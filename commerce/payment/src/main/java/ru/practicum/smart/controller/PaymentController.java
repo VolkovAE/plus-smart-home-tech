@@ -38,25 +38,25 @@ public class PaymentController implements PaymentClient {
     }
 
     @Override
-    @PostMapping(PATH_ORDER_TOTAL_COST)
+    @PostMapping(PATH_PAYMENT_TOTAL_COST)
     public BigDecimal getTotalCost(@Valid @RequestBody OrderDto orderDto) {
         return paymentService.getTotalCost(orderDto);
     }
 
     @Override
-    @PostMapping(PATH_ORDER_REFUND)
+    @PostMapping(PATH_PAYMENT_SUCCESS)
     public void paymentSuccess(@RequestBody UUID paymentId) {
         paymentService.paymentSuccess(paymentId);
     }
 
     @Override
-    @PostMapping(PATH_ORDER_PRODUCT_COST)
+    @PostMapping(PATH_PAYMENT_PRODUCT_COST)
     public BigDecimal getProductCost(@RequestBody @Valid OrderDto orderDto) {
         return paymentService.getProductCost(orderDto);
     }
 
     @Override
-    @PostMapping(PATH_ORDER_FAILED)
+    @PostMapping(PATH_PAYMENT_FAILED)
     public void paymentFailed(@RequestBody UUID paymentId) {
         paymentService.paymentFailed(paymentId);
     }

@@ -34,10 +34,10 @@ public final class StringConstants {
     public static final String REQUESTPARAM_ORDER_USERNAME = "username";
     public static final String NAME_SERVICE_PAYMENT = "payment";
     public static final String PATH_PAYMENT = "/api/v1/payment";
-    public static final String PATH_ORDER_TOTAL_COST = "/totalCost";
-    public static final String PATH_ORDER_REFUND = "/refund";
-    public static final String PATH_ORDER_PRODUCT_COST = "/productCost";
-    public static final String PATH_ORDER_FAILED = "/failed";
+    public static final String PATH_PAYMENT_TOTAL_COST = "/totalCost";
+    public static final String PATH_PAYMENT_SUCCESS = "/success";
+    public static final String PATH_PAYMENT_PRODUCT_COST = "/productCost";
+    public static final String PATH_PAYMENT_FAILED = "/failed";
     public static final String NAME_SERVICE_DELIVERY = "delivery";
     public static final String PATH_DELIVERY = "/api/v1/delivery";
     public static final String PATH_DELIVERY_SUCCESSFUL = "/{orderId}/successful";

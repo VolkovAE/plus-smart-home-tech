@@ -17,15 +17,15 @@ public interface PaymentClient {
     @PostMapping
     PaymentDto makePayment(@Valid @RequestBody OrderDto orderDto);
 
-    @PostMapping(PATH_ORDER_TOTAL_COST)
+    @PostMapping(PATH_PAYMENT_TOTAL_COST)
     BigDecimal getTotalCost(@Valid @RequestBody OrderDto orderDto);
 
-    @PostMapping(PATH_ORDER_REFUND)
+    @PostMapping(PATH_PAYMENT_SUCCESS)
     void paymentSuccess(@RequestBody UUID paymentId);
 
-    @PostMapping(PATH_ORDER_PRODUCT_COST)
+    @PostMapping(PATH_PAYMENT_PRODUCT_COST)
     BigDecimal getProductCost(@RequestBody @Valid OrderDto orderDto);
 
-    @PostMapping(PATH_ORDER_FAILED)
+    @PostMapping(PATH_PAYMENT_FAILED)
     void paymentFailed(@RequestBody UUID paymentId);
 }
