@@ -31,6 +31,6 @@ public class Cart {
     @Column(name = COLUMN_NAME_ENTITY_CART_ACTIVE, nullable = false)
     boolean active = true;
 
-    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = CartProducts.class)
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = CartProducts.class)
     List<CartProducts> products = new ArrayList<>();
 }

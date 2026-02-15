@@ -3,7 +3,6 @@ package ru.practicum.smart.dto.warehouse;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 @Data

@@ -67,7 +67,10 @@ public class ErrorHandlingControllerWarehouse {
         return new ValidationErrorResponse(violations);
     }
 
-    @ExceptionHandler({ValidationException.class, NotFoundException.class, DuplicatedDataException.class, NotRequestQuantityProductException.class})
+    @ExceptionHandler({ValidationException.class,
+            NotFoundException.class,
+            DuplicatedDataException.class,
+            NotRequestQuantityProductException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ValidationErrorResponse onValidationException(Exception e) {
         Violation violation = new Violation("-", e.getMessage());
